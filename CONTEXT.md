@@ -1,5 +1,30 @@
 # CONTEXT
 
+## Atualizacao 2026-05-19 - Landing publica redesenhada
+
+A home publica (`src/app/page.tsx`) agora usa uma composicao de componentes em `src/components/marketing/` com estetica brutalist SaaS B2B.
+
+Componentes criados:
+- `marketing-header.tsx`
+- `hero-section.tsx`
+- `search-agent-mockup.tsx`
+- `stats-section.tsx`
+- `feature-cards-section.tsx`
+- `how-it-works-section.tsx`
+- `enrichment-section.tsx`
+- `pricing-preview-section.tsx`
+- `faq-section.tsx`
+- `final-cta-section.tsx`
+- `marketing-footer.tsx`
+
+Regras mantidas:
+- Dashboard interno continua dark premium command center
+- Landing e marketing usam off-white, preto, amarelo, rosa, azul, verde, bordas pretas e sombras offset
+- A landing nao promete OpenAI real, CRM avancado ou Google Places automatico como recursos totalmente ativos
+- Google Places e descrito como opcional e dependente de API key
+- Demo pode rodar com provider mock
+- WhatsApp permanece manual via link `wa.me`
+
 ## Produto
 
 RaspaLead e um SaaS de prospeccao local para gerar listas de empresas, enriquecer sinais comerciais, sugerir mensagens e operar os leads dentro de uma interface command center.

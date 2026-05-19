@@ -1,5 +1,15 @@
 # RaspaLead
 
+## Atualizacao 2026-05-19 - Landing publica brutalist
+
+A landing publica (`/`) foi redesenhada para uma estetica brutalist SaaS B2B inspirada em Dados Premium e nas imagens de referencia do projeto.
+
+- Nova camada de marketing em `src/components/marketing/`
+- Secoes implementadas: header com ticker, hero, mockup de busca, prova dark, cards coloridos, como funciona, comparacao, pricing preview, FAQ, CTA final e footer
+- Separacao visual preservada: landing publica clara/brutalist; dashboard interno dark command center
+- Copy honesta: demo pode rodar com provider mock; Google Places depende de API key; WhatsApp e manual via `wa.me`; OpenAI real e CRM avancado seguem como roadmap
+- Nao houve alteracao em Supabase, Inngest, providers, schema, Server Actions ou rotas privadas
+
 SaaS multi-tenant de prospeccao local com dashboard estilo command center, auth via Supabase, jobs em background com Inngest, deduplicacao centralizada e exportacao XLSX de leads.
 
 ## Visao geral
@@ -208,4 +218,3 @@ O enriquecimento de leads com `source = "google_places"` agora inclui análise r
 `websiteQualityScore` é a qualidade técnica do site, não o score comercial do lead.
 Um site ruim é tratado como **sinal de oportunidade** para quem vende marketing, redesign, tráfego ou automação.
 O `final_score` recebe apenas bônus moderado por site de qualidade — nunca penalização pesada por site ruim.
-

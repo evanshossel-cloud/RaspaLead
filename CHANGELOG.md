@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## 2026-05-19 - Redesign brutalist da landing publica
+
+### Adicionado
+
+- `src/components/marketing/marketing-header.tsx`
+- `src/components/marketing/hero-section.tsx`
+- `src/components/marketing/search-agent-mockup.tsx`
+- `src/components/marketing/stats-section.tsx`
+- `src/components/marketing/feature-cards-section.tsx`
+- `src/components/marketing/how-it-works-section.tsx`
+- `src/components/marketing/enrichment-section.tsx`
+- `src/components/marketing/pricing-preview-section.tsx`
+- `src/components/marketing/faq-section.tsx`
+- `src/components/marketing/final-cta-section.tsx`
+- `src/components/marketing/marketing-footer.tsx`
+
+### Alterado
+
+- `src/app/page.tsx` agora compoe a landing publica com visual brutalist SaaS B2B
+- Landing passou a usar fundo off-white, secoes dark, cards coloridos, bordas pretas, sombras offset, CTAs fortes e mockup de produto
+- Copy ajustada para vender o fluxo atual sem prometer OpenAI real, CRM avancado ou Google Places automatico como recursos totalmente ativos
+
+### Nao alterado
+
+- Dashboard interno dark command center
+- Rotas privadas
+- Supabase, Inngest, providers, schema e Server Actions
+- `/login` e `/register`
+
+### Validacoes
+
+- `pnpm typecheck` passou
+- `pnpm build` deve ser registrado no relatorio final desta tarefa
+
 ## 2026-05-18 — Direcao visual da landing page registrada
 
 ### Decisao

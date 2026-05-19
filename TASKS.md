@@ -1,5 +1,13 @@
 # TASKS
 
+## Atualizacao 2026-05-19
+
+- Landing publica brutalist SaaS B2B concluida em `src/app/page.tsx`
+- Componentes de marketing criados em `src/components/marketing/`
+- Implementados: ticker, header, hero, mockup de busca, prova dark, cards coloridos, como funciona, comparacao, pricing preview, FAQ, CTA final e footer
+- Copy ajustada para nao prometer OpenAI real, CRM avancado ou Google Places automatico como recursos totalmente ativos
+- Proxima etapa de marketing: validar conversao e criar `/pricing` real quando planos estiverem definidos
+
 ## Concluidas
 
 - Auth SSR com middleware e workspaces multi-tenant

@@ -1,5 +1,18 @@
 # PROJECT STATUS
 
+## Atualizacao 2026-05-19 - Landing publica brutalist SaaS B2B
+
+Concluido:
+- Landing publica (`/`) redesenhada para estetica brutalist SaaS B2B
+- Componentes de marketing criados em `src/components/marketing/`
+- Secoes implementadas: ticker, header, hero, mockup, prova dark, cards coloridos, como funciona, comparacao, pricing preview, FAQ, CTA final e footer
+- Copy comercial mantida honesta: provider mock na demo, Google Places opcional via API key, WhatsApp manual, OpenAI real e CRM avancado como roadmap
+- Dashboard interno dark command center e rotas privadas nao foram alterados
+
+Proximo passo visual:
+- Validar responsividade e conversao da landing com beta fechado
+- Criar `/pricing` publico real quando os planos comerciais estiverem definidos
+
 ## O que ja funciona com mock (LEAD_PROVIDER=mock)
 
 - Login, cadastro e sessao com Supabase SSR
