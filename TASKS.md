@@ -39,12 +39,32 @@
 
 ## Proximas tarefas recomendadas
 
+### Produto / pipeline
+
 1. Testar resultados reais do Google Places e calibrar queries por nicho/cidade
 2. Website enrichment real (status HTTP, SSL, meta viewport) via fetch
 3. OpenAI real para mensagens e score contextual
 4. Edicao e aprovacao de mensagem antes de enviar
 5. Calibracao do score com buscas reais (comparar raw vs final apos Place Details)
 6. Beta controlado com usuarios reais
+
+### Landing page e identidade publica
+
+1. Revisar landing atual (`/` em `src/app/page.tsx`) e mapear o que precisa mudar
+2. Criar nova landing no estilo brutalist SaaS B2B (baseado nas referencias: Combustivel Justo + dadospremium.com)
+   - Hero com headline grande + marca-texto colorido + badge pill + blob shapes
+   - Ticker de prova social
+   - Secao dark com metricas grandes
+   - CTA principal preto + CTA secundario outlined
+3. Criar componentes publicos reutilizaveis em `src/components/public/`:
+   - `hero-section.tsx`
+   - `stats-ticker.tsx`
+   - `dark-proof-section.tsx`
+   - `feature-card-colorful.tsx`
+   - `cta-button-brutalist.tsx`
+4. Criar pagina `/pricing` com planos e tabela comparativa no estilo publico
+5. Revisar FAQ e CTA de conversao
+6. Garantir separacao de contexto visual (landing ≠ dashboard)
 
 ## Backlog tecnico
 
@@ -64,6 +84,6 @@
 
 ## Prioridades sugeridas
 
-- Alta: validar Google Places real, Place Details, notas, CRM basico
-- Media: OpenAI real, exportacao avancada, historico operacional, paginacao
+- Alta: validar Google Places real, landing nova no estilo brutalist, beta controlado
+- Media: OpenAI real, pricing publico, exportacao avancada, paginacao
 - Baixa: white-label, automacoes outbound

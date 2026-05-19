@@ -1,5 +1,33 @@
 # CHANGELOG
 
+## 2026-05-18 — Direcao visual da landing page registrada
+
+### Decisao
+
+Definida identidade visual publica do RaspaLead separada do dashboard interno.
+
+Duas camadas visuais definitivas:
+- **Dashboard interno** (`/app/*`): dark premium command center — mantido, nao alterado
+- **Landing publica** (`/`, `/pricing`, paginas de marketing): brutalist SaaS B2B — a implementar
+
+### Referencias visuais documentadas
+
+- Combustivel Justo (landing page): hero em off-white, headline uppercase gigante, marca-texto amarelo/rosa, badge pill, blobs organicos, ticker de social proof, secao dark com numeros amarelos, botao CTA preto
+- Combustivel Justo (interior do app): cards com fundo solido colorido (laranja, verde, roxo, azul), bordas pretas, numeros grandes, layout data-rich vibrante
+- dadospremium.com: tom comercial B2B brasileiro, alto contraste, produto que "vende" sem parecer generico
+
+### Documentado em
+
+- `CONTEXT.md` — secao "Identidade visual — duas camadas separadas" com anatomia detalhada, paleta e regras de separacao
+- `TASKS.md` — novas tarefas de landing: revisao atual, implementacao nova, componentes publicos, pricing, FAQ
+- `PROJECT_STATUS.md` — tabela de status visual e proximos passos atualizados
+
+### Nao implementado neste momento
+
+Nenhuma alteracao de codigo. Apenas registro de decisao de produto e design.
+
+---
+
 ## 2026-05-17 — Place Details no enriquecimento sob demanda
 
 ### Adicionado

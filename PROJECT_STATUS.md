@@ -54,9 +54,31 @@
 - `filterExistingLeads` limita a 2000 leads por consulta (suficiente para MVP)
 - `place_id` preenchido apenas em leads gerados apos a correcao de `map-raw-lead-to-insert.ts`; leads antigos sem place_id usarao fallback mock no enrichment
 
+## Identidade visual — decisao registrada (2026-05-18)
+
+Duas camadas visuais separadas e definitivas:
+
+| Contexto | Estilo | Status |
+|---|---|---|
+| Dashboard interno (`/app/*`) | Dark premium command center | Implementado |
+| Landing publica (`/`, `/pricing`) | Brutalist SaaS B2B | A implementar |
+
+### Landing — o que foi decidido
+
+- Inspiracao: Combustivel Justo (landing + app) e dadospremium.com
+- Fundo off-white/creme, hero com headline gigante uppercase, marca-texto amarelo/rosa
+- Badge pill de novidade, blobs organicos de fundo
+- Ticker horizontal de prova social (fundo amarelo ou rosa)
+- Botao CTA preto preenchido + secundario outlined
+- Secao dark com numeros grandes em amarelo
+- Componentes publicos em `src/components/public/` (a criar)
+- Nunca misturar estilo brutalist dentro do dashboard
+
 ## Proximo passo sugerido
 
-1. Website enrichment real: verificar HTTP status, SSL e meta viewport via fetch
-2. OpenAI real para mensagens e score contextual
-3. Calibrar queries do Google Places por nicho e cidade com dados reais
-4. Beta controlado com usuarios reais
+1. Revisar landing atual (`/` em `src/app/page.tsx`) e identificar o que muda
+2. Implementar nova landing no estilo brutalist SaaS (Combustivel Justo / dadospremium)
+3. Website enrichment real: HTTP status, SSL, meta viewport via fetch
+4. OpenAI real para mensagens e score contextual
+5. Calibrar queries do Google Places por nicho e cidade com dados reais
+6. Beta controlado com usuarios reais

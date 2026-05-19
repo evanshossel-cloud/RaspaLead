@@ -5,7 +5,8 @@ SaaS multi-tenant de prospeccao local com dashboard estilo command center, auth 
 ## Visao geral
 
 - Stack: `Next.js 16`, `React 19`, `TypeScript`, `Tailwind CSS v4`, `shadcn/ui`, `Supabase SSR`, `Inngest`, `exceljs`
-- Tema atual: dark premium command center
+- Tema do dashboard: dark premium command center (app interno)
+- Tema da landing: brutalist SaaS B2B — off-white, headlines uppercase, marca-texto colorido, secoes dark (a implementar)
 - Multi-tenant com workspace ativo, RLS e rotas protegidas por middleware
 - Provider de leads configuravel via `LEAD_PROVIDER` (default: `mock`)
 - Google Places em modo busca rasa para criacao de leads; Place Details acionado sob demanda no enriquecimento
@@ -139,14 +140,24 @@ npx inngest-cli@latest dev
 ## Estrutura relevante
 
 ```text
-src/features/leads/
-  providers/    # LeadProvider, mock, google-places, mapper
-  enrichment/   # google-place-details.ts, enrich-lead.ts
-  scoring/      # calculate-raw-score.ts
-  services/     # dedupe-leads.ts, filter-existing-leads.ts
-  utils/        # normalize-lead.ts
-src/lib/inngest/ # jobs de background
-supabase/        # schema.sql com RLS
+src/
+  app/
+    (auth)/         # login, register, callback
+    (dashboard)/    # rotas protegidas — estilo dark premium
+    page.tsx        # landing publica — estilo brutalist SaaS (a refatorar)
+  components/
+    layout/         # sidebar, header, theme toggle (dashboard)
+    shared/         # componentes reutilizaveis internos
+    public/         # (a criar) componentes da landing publica
+    ui/             # shadcn/ui
+  features/leads/
+    providers/      # LeadProvider, mock, google-places, mapper
+    enrichment/     # google-place-details.ts, enrich-lead.ts
+    scoring/        # calculate-raw-score.ts
+    services/       # dedupe-leads.ts, filter-existing-leads.ts
+    utils/          # normalize-lead.ts
+  lib/inngest/      # jobs de background
+supabase/           # schema.sql com RLS
 ```
 
 ## Estado atual
