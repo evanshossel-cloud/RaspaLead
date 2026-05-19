@@ -1,7 +1,11 @@
 import type { LeadEnrichmentInsert, LeadRecord } from "@/features/leads/types";
+import type { Json } from "@/types/database";
 import { getGooglePlaceDetails } from "./google-place-details";
 import { analyzeWebsite } from "./website-enrichment";
 import type { WebsiteEnrichmentResult } from "./website-enrichment";
+
+// Alias do ramo de objeto do tipo Json (database.ts)
+type JsonObject = { [key: string]: Json | undefined };
 
 export interface EnrichLeadResult {
   enrichment: LeadEnrichmentInsert;
@@ -171,7 +175,7 @@ async function enrichWithGooglePlaceDetails(lead: LeadRecord): Promise<EnrichLea
   });
 
   // 4. Montar raw_data com metadados de enrichment
-  const rawDataExtra: Record<string, unknown> = {
+  const rawDataExtra: JsonObject = {
     source: "google_place_details",
     place_id: details.placeId,
     business_status: details.businessStatus ?? null,
