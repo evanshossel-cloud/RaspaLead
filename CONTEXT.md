@@ -65,6 +65,85 @@ A secao "Diagnostico da busca" em `/searches/[id]` exibe essas informacoes com:
 - Query usada (monospace)
 - Erro (destructive), se houver
 
+
+## Website Enrichment v1
+
+### Arquitetura
+
+```
+src/features/leads/enrichment/
+  google-place-details.ts     # Busca detalhes reais via Google Place Details API
+  website-enrichment.ts       # Analisa site via fetch server-side (Website Enrichment v1)
+  enrich-lead.ts              # Orquestra: Place Details → website analysis → final_score
+```
+
+### Diferencas entre as camadas de enriquecimento
+
+| Camada | O que faz | Quando roda |
+|--------|-----------|-------------|
+| Provider (busca rasa) | Retorna nome, categoria, endereco, rating, maps URL | Em toda busca nova |
+| Google Place Details | Busca telefone, website, endereco completo, rating atualizado | No enrichment manual (leads google_places com place_id) |
+| Website Analysis (v1) | Analisa site: HTTP status, HTTPS, viewport, copyright, tempo | Logo apos Place Details, se website disponivel |
+| Mock enrichment | Dados deterministicos para leads sem place_id | Fallback para todos os outros leads |
+
+### Como website-enrichment.ts funciona
+
+1. Normaliza URL (adiciona https:// se ausente)
+2. Tenta fetch com timeout de 7 segundos e User-Agent realista
+3. Se https falhar e URL nao tinha protocolo: tenta http como fallback
+4. Le HTML limitado a 50 KB
+5. Detecta meta viewport via regex
+6. Detecta copyright year proximos de simbolo de copyright (©, &copy;, "copyright")
+7. Calcula websiteQualityScore v1:
+   - Base 50 pontos
+   - +15 se HTTP 200-299
+   - +10 se HTTPS
+   - +15 se meta viewport presente
+   - +10 se tempo < 3000 ms
+   - +10 se copyright year >= ano atual - 2
+   - -20 se HTTP >= 400
+   - -10 se sem meta viewport
+   - -10 se copyright year < ano atual - 5
+8. Nunca lanca excecao — retorna `error` descritivo em caso de falha
+
+### websiteQualityScore: score tecnico, nao score comercial
+
+`websiteQualityScore` mede qualidade tecnica do site (velocidade, seguranca, responsividade).
+NAO e o score comercial do lead. Um site ruim pode indicar oportunidade para quem vende:
+- Desenvolvimento/redesign de site
+- Trafego pago / SEO
+- Marketing digital
+- Google Meu Negocio
+- Automacao de prospeccao
+
+Por isso, `website_quality_score` baixo contribui apenas com bonus moderado positivo no `final_score`,
+nao com penalizacao.
+
+### Decisoes de custo e seguranca
+
+- Sem Lighthouse (custoso, requer browser headless)
+- Sem Wappalyzer (complexidade desnecessaria para MVP)
+- Sem crawler profundo (evitar sobrecarga e bloqueios)
+- Fetch server-side apenas: credenciais e resultados nunca expostos no client
+- Timeout de 7s: evita travar o job Inngest por sites lentos
+- Sem nova variavel de ambiente: funciona com o mesmo .env.local
+- .env.example nao alterado
+
+### Campos salvos em lead_enrichments
+
+| Campo | Tipo | Fonte |
+|-------|------|-------|
+| website_status | integer | HTTP status code |
+| website_final_url | text | response.url (apos redirects) |
+| website_has_ssl | boolean | finalUrl.startsWith("https://") |
+| website_has_meta_viewport | boolean | regex no HTML |
+| website_copyright_year | integer | regex proximos de © no HTML |
+| website_quality_score | integer | formula v1 (0-100) |
+| website_response_time_ms | integer | Date.now() delta |
+
+Todos esses campos ja existiam no schema; nenhuma migracao necessaria.
+
+
 ## Pipeline de criacao de leads (leadSearchCreated)
 
 1. `providerName = resolveProviderName()` — le `LEAD_PROVIDER` do ambiente

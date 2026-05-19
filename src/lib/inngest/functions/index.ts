@@ -270,7 +270,7 @@ export const leadEnrichmentRequested = inngest.createFunction(
       const enrichResult = await step.run("enrich-lead", async () => {
         const result = await enrichLeadWithAvailableSources(lead);
         console.log(
-          `[lead-enrichment] lead_id=${lead_id} source=${result.enrichmentSource} phone=${Boolean(result.leadFields.phone)} website=${Boolean(result.leadFields.website)}`,
+          `[lead-enrichment] lead_id=${lead_id} source=${result.enrichmentSource} phone=${Boolean(result.leadFields.phone)} website=${Boolean(result.leadFields.website)} website_analysis=${(result.enrichment.raw_data as Record<string,unknown>|null)?.website_analysis_used ?? false} http=${result.enrichment.website_status ?? "n/a"} quality=${result.enrichment.website_quality_score ?? "n/a"} final_score=${result.finalScore}`,
         );
         return result;
       });

@@ -168,3 +168,44 @@ supabase/           # schema.sql com RLS
 - Enriquecimento real: Place Details sob demanda — preenche telefone, website, Maps URL nos leads do Google Places
 - Ainda mockado: enrichment de leads sem place_id, mensagens com IA real
 - Fases futuras: website enrichment real, OpenAI, CRM, cobranca real
+
+## Website Enrichment v1
+
+O enriquecimento de leads com `source = "google_places"` agora inclui análise real do site.
+
+### Sinais detectados
+
+| Sinal | Descrição |
+|-------|-----------|
+| Status HTTP | Código de resposta do site (200, 404, 500...) |
+| URL final | URL após seguir todos os redirects |
+| HTTPS | Site serve conteúdo via HTTPS |
+| Meta viewport | Site é responsivo / mobile-friendly |
+| Copyright year | Ano mais recente encontrado próximo de © |
+| Tempo de resposta | Milissegundos até receber o HTML |
+| Score qualidade | Nota técnica 0–100 calculada com base nos sinais acima |
+
+### Limitações
+
+- Sem Lighthouse (sem análise de performance profunda)
+- Sem Wappalyzer (sem detecção de tecnologias)
+- Sem crawler profundo (analisa apenas o HTML da página inicial)
+- Timeout de 7 segundos: sites muito lentos retornam campos null
+- Alguns sites bloqueiam fetches automatizados mesmo com User-Agent realista
+
+### Como testar o fluxo de enriquecimento
+
+1. Configure `LEAD_PROVIDER=mock` no `.env.local`
+2. Crie uma busca em `/searches/new`
+3. Abra um lead em `/leads`
+4. Clique em "Enriquecer lead"
+5. Aguarde o job Inngest processar (auto-refresh ativo)
+6. Com `LEAD_PROVIDER=mock`: dados simulados deterministicos (sem fetch real)
+7. Com `LEAD_PROVIDER=google_places` e lead com `place_id`: Place Details + website analysis real
+
+### Score técnico vs score comercial
+
+`websiteQualityScore` é a qualidade técnica do site, não o score comercial do lead.
+Um site ruim é tratado como **sinal de oportunidade** para quem vende marketing, redesign, tráfego ou automação.
+O `final_score` recebe apenas bônus moderado por site de qualidade — nunca penalização pesada por site ruim.
+

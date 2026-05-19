@@ -1,5 +1,7 @@
 import type { LeadEnrichmentInsert, LeadRecord } from "@/features/leads/types";
 import { getGooglePlaceDetails } from "./google-place-details";
+import { analyzeWebsite } from "./website-enrichment";
+import type { WebsiteEnrichmentResult } from "./website-enrichment";
 
 export interface EnrichLeadResult {
   enrichment: LeadEnrichmentInsert;
@@ -31,25 +33,72 @@ function pickDeterministicNumber(seed: number, min: number, max: number): number
   return min + (seed % (max - min + 1));
 }
 
+/**
+ * Calcula o final_score para leads com dados reais (Google Place Details + Website Analysis).
+ *
+ * Regras:
+ * - Parte do raw_score como base
+ * - Bônus por telefone, rating, reviewCount
+ * - Bônus moderado por website de qualidade
+ * - Site ruim NÃO penaliza o score — pode ser sinal de oportunidade comercial
+ */
 function computeRealFinalScore(params: {
   baseScore: number;
   phone: string | null;
   website: string | null;
   rating: number | null;
   reviewCount: number | null;
+  websiteQualityScore?: number | null;
+  websiteStatus?: number | null;
+  websiteHasSsl?: boolean | null;
+  websiteHasMetaViewport?: boolean | null;
 }): number {
-  const { baseScore, phone, website, rating, reviewCount } = params;
+  const {
+    baseScore,
+    phone,
+    website,
+    rating,
+    reviewCount,
+    websiteQualityScore,
+    websiteStatus,
+    websiteHasSsl,
+    websiteHasMetaViewport,
+  } = params;
+
   let score = baseScore;
 
+  // Telefone válido: sinal forte de contato direto
   score += phone ? 8 : -3;
 
+  // Website: presença digital
   if (website) {
     score += 3;
-    if (website.startsWith("https://")) score += 2;
+
+    // SSL: site moderno e seguro
+    if (websiteHasSsl === true) score += 2;
+
+    // Qualidade técnica: bônus moderado para site bom
+    // Site ruim não penaliza — pode indicar oportunidade para quem vende marketing/site/tráfego
+    if (websiteQualityScore !== null && websiteQualityScore !== undefined) {
+      if (websiteQualityScore >= 75) score += 3;
+      else if (websiteQualityScore >= 55) score += 1;
+      // Nota: qualityScore < 55 não penaliza — é sinal de oportunidade
+    }
+
+    // Site online (HTTP 2xx): confirmação de presença ativa
+    if (websiteStatus !== null && websiteStatus !== undefined) {
+      if (websiteStatus >= 200 && websiteStatus < 300) score += 2;
+      // Nota: 4xx/5xx não penalizam — site fora pode ser motivo de abordagem
+    }
+
+    // Mobile-friendly: site preparado para mobile
+    if (websiteHasMetaViewport === true) score += 2;
   }
 
+  // Rating alto: prova social
   if (rating !== null && rating >= 4.2) score += 5;
 
+  // Número de reviews: volume de clientes ativos
   if (reviewCount !== null) {
     if (reviewCount >= 50) score += 8;
     else if (reviewCount >= 20) score += 5;
@@ -80,6 +129,7 @@ function computeMockFinalScore(params: {
 }
 
 async function enrichWithGooglePlaceDetails(lead: LeadRecord): Promise<EnrichLeadResult> {
+  // 1. Obter dados reais do Google Place Details
   const details = await getGooglePlaceDetails(lead.place_id!);
 
   const resolvedPhone = details.phone ?? lead.phone;
@@ -88,37 +138,83 @@ async function enrichWithGooglePlaceDetails(lead: LeadRecord): Promise<EnrichLea
   const resolvedAddress = details.address ?? lead.address;
   const resolvedRating = details.rating ?? lead.rating;
   const resolvedReviewCount = details.reviewCount ?? lead.review_count;
-
-  const websiteHasSsl = resolvedWebsite?.startsWith("https://") ?? false;
   const phoneValid = Boolean(resolvedPhone);
 
+  // 2. Analisar website se disponível
+  let websiteAnalysis: WebsiteEnrichmentResult | null = null;
+  const websiteAnalysisUsed = Boolean(resolvedWebsite);
+
+  if (resolvedWebsite) {
+    try {
+      websiteAnalysis = await analyzeWebsite(resolvedWebsite);
+    } catch {
+      // Nunca deixa falha do website quebrar o enrichment
+      websiteAnalysis = null;
+    }
+  }
+
+  console.log(
+    `[website-enrichment] lead_id=${lead.id} website_analysis_used=${websiteAnalysisUsed} status=${websiteAnalysis?.websiteStatus ?? "n/a"} quality=${websiteAnalysis?.websiteQualityScore ?? "n/a"} ok=${!websiteAnalysis?.error}`,
+  );
+
+  // 3. Calcular final_score com todos os sinais disponíveis
   const finalScore = computeRealFinalScore({
     baseScore: lead.raw_score ?? 50,
     phone: resolvedPhone,
     website: resolvedWebsite,
     rating: resolvedRating,
     reviewCount: resolvedReviewCount,
+    websiteQualityScore: websiteAnalysis?.websiteQualityScore ?? null,
+    websiteStatus: websiteAnalysis?.websiteStatus ?? null,
+    websiteHasSsl: websiteAnalysis?.websiteHasSsl ?? null,
+    websiteHasMetaViewport: websiteAnalysis?.websiteHasMetaViewport ?? null,
   });
+
+  // 4. Montar raw_data com metadados de enrichment
+  const rawDataExtra: Record<string, unknown> = {
+    source: "google_place_details",
+    place_id: details.placeId,
+    business_status: details.businessStatus ?? null,
+    enriched_at: new Date().toISOString(),
+    place_details_used: true,
+    website_analysis_used: websiteAnalysisUsed,
+  };
+
+  if (websiteAnalysis?.error) {
+    rawDataExtra.website_error = websiteAnalysis.error;
+  }
+  if (websiteAnalysis?.websiteResponseTimeMs !== null && websiteAnalysis?.websiteResponseTimeMs !== undefined) {
+    rawDataExtra.response_time_ms = websiteAnalysis.websiteResponseTimeMs;
+  }
+  if (websiteAnalysis?.websiteFinalUrl) {
+    rawDataExtra.website_final_url = websiteAnalysis.websiteFinalUrl;
+  }
+  if (websiteAnalysis?.websiteQualityScore !== null && websiteAnalysis?.websiteQualityScore !== undefined) {
+    rawDataExtra.website_quality_score = websiteAnalysis.websiteQualityScore;
+  }
+
+  // 5. Determinar valores finais dos campos de website para o enrichment
+  const websiteStatus = websiteAnalysis?.websiteStatus ?? (resolvedWebsite ? null : null);
+  const websiteFinalUrl = websiteAnalysis?.websiteFinalUrl ?? resolvedWebsite ?? null;
+  const websiteHasSsl =
+    websiteAnalysis?.websiteHasSsl ??
+    (resolvedWebsite ? resolvedWebsite.startsWith("https://") : null);
 
   return {
     enrichment: {
       lead_id: lead.id,
       workspace_id: lead.workspace_id,
-      website_status: resolvedWebsite ? 200 : null,
-      website_final_url: resolvedWebsite ?? null,
-      website_has_ssl: resolvedWebsite ? websiteHasSsl : null,
-      website_has_meta_viewport: null,
-      website_copyright_year: null,
-      website_quality_score: null,
+      website_status: websiteStatus,
+      website_final_url: websiteFinalUrl,
+      website_has_ssl: websiteHasSsl,
+      website_has_meta_viewport: websiteAnalysis?.websiteHasMetaViewport ?? null,
+      website_copyright_year: websiteAnalysis?.websiteCopyrightYear ?? null,
+      website_quality_score: websiteAnalysis?.websiteQualityScore ?? null,
+      website_response_time_ms: websiteAnalysis?.websiteResponseTimeMs ?? null,
       phone_valid: phoneValid,
       whatsapp_likely: phoneValid,
       review_recency_score: null,
-      raw_data: {
-        source: "google_place_details",
-        place_id: details.placeId,
-        business_status: details.businessStatus ?? null,
-        enriched_at: new Date().toISOString(),
-      },
+      raw_data: rawDataExtra,
     },
     finalScore,
     leadFields: {
@@ -162,6 +258,7 @@ function enrichWithMock(lead: LeadRecord): EnrichLeadResult {
       website_has_meta_viewport: websiteHasMetaViewport,
       website_copyright_year: copyrightYear,
       website_quality_score: hasWebsite ? websiteQualityScore : pickDeterministicNumber(seed, 18, 42),
+      website_response_time_ms: hasWebsite ? pickDeterministicNumber(seed + 3, 480, 4200) : null,
       phone_valid: phoneValid,
       whatsapp_likely: phoneValid,
       review_recency_score: reviewRecencyScore,
@@ -169,6 +266,8 @@ function enrichWithMock(lead: LeadRecord): EnrichLeadResult {
         source: "mock_enrichment",
         generated_at: new Date().toISOString(),
         seed,
+        place_details_used: false,
+        website_analysis_used: false,
       },
     },
     finalScore,

@@ -160,3 +160,92 @@ Nenhuma alteracao de codigo. Apenas registro de decisao de produto e design.
 
 - `GET /api/exports/leads`, `export-leads-button.tsx`, integracao em `/leads` e `/searches/[id]`
 - Documentacao inicial (CONTEXT, TASKS, PROJECT_STATUS, CHANGELOG, README)
+
+---
+
+## 2026-05-19 — Website Enrichment v1
+
+### Adicionado
+
+- `src/features/leads/enrichment/website-enrichment.ts` (novo)
+  - Servico `analyzeWebsite(url: string): Promise<WebsiteEnrichmentResult>`
+  - Normaliza URL (adiciona https:// se ausente; fallback para http:// se https falhar)
+  - Fetch server-side com timeout de 7 segundos via AbortController
+  - Segue redirects automaticamente
+  - Captura: status HTTP, URL final, HTTPS, meta viewport, copyright year, tempo de resposta
+  - Leitura do HTML limitada a 50 KB para evitar payload gigante
+  - Detecta meta viewport via regex em atributos
+  - Detecta copyright year procurando por © / &copy; / copyright + ano no range 2000–atual
+  - Calcula `websiteQualityScore` v1 (0–100):
+    - base 50
+    - +15 se HTTP 200–299
+    - +10 se HTTPS
+    - +15 se meta viewport presente
+    - +10 se tempo de resposta < 3000 ms
+    - +10 se copyright year >= ano atual - 2
+    - -20 se HTTP >= 400
+    - -10 se sem meta viewport
+    - -10 se copyright year < ano atual - 5
+  - Nunca lança erro que quebre o fluxo — retorna `error` descritivo em caso de falha
+
+### Alterado
+
+- `src/features/leads/enrichment/enrich-lead.ts`
+  - Importa e usa `analyzeWebsite` na funcao `enrichWithGooglePlaceDetails`
+  - Determina website final: Place Details > lead.website
+  - Se website disponivel: executa `analyzeWebsite`, inclui resultados no enrichment e no final_score
+  - Se website ausente: mantem campos como null, registra `website_analysis_used: false`
+  - `computeRealFinalScore` atualizado com novos parametros:
+    - `websiteQualityScore`, `websiteStatus`, `websiteHasSsl`, `websiteHasMetaViewport`
+    - Bonus moderado por site de qualidade (max +7 pts); site ruim NAO penaliza (oportunidade)
+  - `enrichWithMock` preservado sem alteracoes no comportamento (adiciona `website_analysis_used: false` ao raw_data)
+  - Log melhorado: inclui `website_analysis_used`, `http status`, `quality`, `final_score`
+  - `website_response_time_ms` incluido no `LeadEnrichmentInsert` (campo ja existia no schema)
+  - `raw_data` do Google Place Details agora inclui:
+    - `place_details_used: true`
+    - `website_analysis_used: true/false`
+    - `website_error` (se houver)
+    - `response_time_ms`
+    - `website_final_url`
+    - `website_quality_score`
+
+- `src/lib/inngest/functions/index.ts`
+  - Log do step `enrich-lead` atualizado para incluir:
+    - `website_analysis`, `http`, `quality`, `final_score`
+
+- `src/app/(dashboard)/leads/[id]/page.tsx`
+  - Importados icones: `AlertTriangle`, `Clock`, `Shield`, `ShieldOff`
+  - Adicionadas funcoes helper: `parseWebsiteError`, `parseWebsiteAnalysisUsed`
+  - Variaveis computadas: `websiteError`, `websiteAnalysisUsed`, `currentYear`
+  - Card de Enriquecimento expandido com:
+    - Badges contextuais: "Site online", "Sem HTTPS", "Mobile-friendly", "Site antigo", "Erro ao acessar", "Sem site informado"
+    - Bloco "Analise do site (Website Enrichment v1)" visivel quando `websiteAnalysisUsed = true`:
+      - Status HTTP com cor contextual (verde/vermelho)
+      - URL final clicavel
+      - HTTPS com icone Shield (verde) ou ShieldOff (amarelo)
+      - Mobile/viewport com cor contextual
+      - Ano copyright com destaque laranja se antigo
+      - Score qualidade do site com cor contextual
+      - Tempo de resposta com icone Clock e cor contextual
+      - Erro ao acessar, se houver
+    - Sinais de telefone/whatsapp/recencia mantidos abaixo
+  - Campos null tratados graciosamente em todo o card
+
+- `src/app/api/exports/leads/route.ts`
+  - Adicionada coluna "Tempo resposta (ms)" (key: `website_response_time_ms`) apos "Ano copyright"
+  - Valor lido de `enrichment?.website_response_time_ms`
+
+### Validacoes executadas
+
+- `pnpm typecheck`: ver relatorio final
+- `pnpm build`: ver relatorio final
+
+### Observacoes
+
+- Sem Lighthouse, sem Wappalyzer, sem crawler profundo
+- Sem alteracao de schema (website_response_time_ms ja existia no schema e nos tipos)
+- Sem nova variavel de ambiente
+- .env.example nao alterado
+- Fallback mock continua funcionando sem mudancas de comportamento
+- Place Details continua funcionando; website analysis e executado depois, sem interferir
+- Site ruim NAO derruba o final_score — e tratado como sinal de oportunidade comercial

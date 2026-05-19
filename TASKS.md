@@ -29,6 +29,17 @@
 
 ## Concluidas (recentes)
 
+- Website Enrichment v1 implementado
+  - `src/features/leads/enrichment/website-enrichment.ts` (novo servico)
+  - `analyzeWebsite()`: HTTP status, URL final, HTTPS, meta viewport, copyright year, tempo de resposta
+  - `websiteQualityScore` v1 calculado (0-100)
+  - Integrado em `enrich-lead.ts` — executa apos Place Details, antes de calcular final_score
+  - `final_score` atualizado com sinais de website (bonus moderado, site ruim = oportunidade)
+  - `website_response_time_ms` salvo em `lead_enrichments` (campo ja existia no schema)
+  - `raw_data` enriquecido: `website_analysis_used`, `website_error`, `response_time_ms`
+  - Frontend `/leads/[id]` com badges contextuais e bloco "Analise do site"
+  - Exportacao XLSX com coluna "Tempo resposta (ms)"
+
 - Place Details sob demanda no enrichment manual por lead
   - `src/features/leads/enrichment/google-place-details.ts`
   - `src/features/leads/enrichment/enrich-lead.ts`
@@ -41,12 +52,12 @@
 
 ### Produto / pipeline
 
-1. Testar resultados reais do Google Places e calibrar queries por nicho/cidade
-2. Website enrichment real (status HTTP, SSL, meta viewport) via fetch
-3. OpenAI real para mensagens e score contextual
-4. Edicao e aprovacao de mensagem antes de enviar
-5. Calibracao do score com buscas reais (comparar raw vs final apos Place Details)
-6. Beta controlado com usuarios reais
+1. Calibrar websiteQualityScore e final_score com leads reais
+2. OpenAI real para mensagens e score contextual
+3. Edicao e aprovacao de mensagem antes de enviar
+4. Beta fechado com 3 nichos/cidades reais (validar funil completo)
+5. Nova landing brutalist SaaS B2B
+6. Checkout e planos reais
 
 ### Landing page e identidade publica
 

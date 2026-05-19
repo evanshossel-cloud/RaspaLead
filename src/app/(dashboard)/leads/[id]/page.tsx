@@ -1,13 +1,17 @@
 import Link from "next/link";
 import {
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  Clock,
   Globe,
   MapPin,
   MessageCircle,
   MessageSquareText,
   Phone,
   Search,
+  Shield,
+  ShieldOff,
   Sparkles,
   Star,
   Target,
@@ -196,6 +200,17 @@ function parseEnrichmentSource(
   return null;
 }
 
+function parseWebsiteError(rawData: unknown): string | null {
+  if (typeof rawData !== "object" || rawData === null) return null;
+  const err = (rawData as Record<string, unknown>).website_error;
+  return typeof err === "string" ? err : null;
+}
+
+function parseWebsiteAnalysisUsed(rawData: unknown): boolean {
+  if (typeof rawData !== "object" || rawData === null) return false;
+  return (rawData as Record<string, unknown>).website_analysis_used === true;
+}
+
 function normalizeExternalUrl(value: string | null) {
   if (!value) return null;
   if (value.startsWith("http://") || value.startsWith("https://")) {
@@ -320,6 +335,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
     whatsappPhone && lead.ai_first_message
       ? `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(lead.ai_first_message)}`
       : null;
+  const websiteError = enrichment ? parseWebsiteError(enrichment.raw_data) : null;
+  const websiteAnalysisUsed = enrichment ? parseWebsiteAnalysisUsed(enrichment.raw_data) : false;
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="space-y-6">
@@ -668,32 +686,171 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                   {enrichmentSource === "mock_enrichment" && (
                     <Badge variant="outline">Enrichment simulado</Badge>
                   )}
+                  {/* Badges de website */}
+                  {!lead.website && !enrichment.website_final_url && (
+                    <Badge variant="outline">Sem site informado</Badge>
+                  )}
+                  {enrichment.website_status !== null && enrichment.website_status >= 200 && enrichment.website_status < 300 && (
+                    <Badge variant="default">Site online</Badge>
+                  )}
+                  {enrichment.website_status !== null && enrichment.website_status >= 400 && (
+                    <Badge variant="destructive">Erro ao acessar</Badge>
+                  )}
+                  {websiteError && !enrichment.website_status && (
+                    <Badge variant="destructive">Erro ao acessar</Badge>
+                  )}
+                  {enrichment.website_has_ssl === false && (
+                    <Badge variant="outline" className="border-yellow-600/40 text-yellow-600">Sem HTTPS</Badge>
+                  )}
+                  {enrichment.website_has_meta_viewport === true && (
+                    <Badge variant="outline" className="border-emerald-600/40 text-emerald-600">Mobile-friendly</Badge>
+                  )}
+                  {enrichment.website_copyright_year !== null && enrichment.website_copyright_year < currentYear - 5 && (
+                    <Badge variant="outline" className="border-orange-600/40 text-orange-600">Site antigo</Badge>
+                  )}
                 </div>
+
+                {/* Seção: Análise do site */}
+                {websiteAnalysisUsed && (
+                  <div className="rounded-2xl border border-border/70 bg-background/60 p-4 space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                        Análise do site (Website Enrichment v1)
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <InfoItem
+                        label="Status HTTP"
+                        value={
+                          enrichment.website_status !== null ? (
+                            <span className={
+                              enrichment.website_status >= 200 && enrichment.website_status < 300
+                                ? "text-emerald-600"
+                                : enrichment.website_status >= 400
+                                  ? "text-destructive"
+                                  : "text-foreground"
+                            }>
+                              {enrichment.website_status}
+                            </span>
+                          ) : "Nao informado"
+                        }
+                      />
+                      <InfoItem
+                        label="URL final"
+                        value={
+                          enrichment.website_final_url ? (
+                            <a
+                              href={normalizeExternalUrl(enrichment.website_final_url) ?? "#"}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 text-secondary hover:text-secondary/80 truncate max-w-[200px]"
+                            >
+                              <span className="truncate">{enrichment.website_final_url}</span>
+                              <ArrowRight className="h-3 w-3 shrink-0" />
+                            </a>
+                          ) : "Nao informado"
+                        }
+                      />
+                      <InfoItem
+                        label="HTTPS"
+                        value={
+                          <span className="flex items-center gap-1.5">
+                            {enrichment.website_has_ssl === true ? (
+                              <><Shield className="h-3.5 w-3.5 text-emerald-600" /><span className="text-emerald-600">Sim</span></>
+                            ) : enrichment.website_has_ssl === false ? (
+                              <><ShieldOff className="h-3.5 w-3.5 text-yellow-600" /><span className="text-yellow-600">Nao</span></>
+                            ) : "Nao informado"}
+                          </span>
+                        }
+                      />
+                      <InfoItem
+                        label="Mobile / viewport"
+                        value={
+                          enrichment.website_has_meta_viewport === true
+                            ? <span className="text-emerald-600">Sim</span>
+                            : enrichment.website_has_meta_viewport === false
+                              ? <span className="text-muted-foreground">Nao</span>
+                              : "Nao informado"
+                        }
+                      />
+                      <InfoItem
+                        label="Ano de copyright"
+                        value={
+                          enrichment.website_copyright_year !== null ? (
+                            <span className={
+                              enrichment.website_copyright_year < currentYear - 5
+                                ? "text-orange-600"
+                                : "text-foreground"
+                            }>
+                              {enrichment.website_copyright_year}
+                              {enrichment.website_copyright_year < currentYear - 5 && " (antigo)"}
+                            </span>
+                          ) : "Nao informado"
+                        }
+                      />
+                      <InfoItem
+                        label="Score qualidade do site"
+                        value={
+                          enrichment.website_quality_score !== null ? (
+                            <span className={
+                              enrichment.website_quality_score >= 70
+                                ? "text-emerald-600 font-semibold"
+                                : enrichment.website_quality_score >= 45
+                                  ? "text-foreground"
+                                  : "text-orange-600"
+                            }>
+                              {enrichment.website_quality_score}/100
+                            </span>
+                          ) : "Nao informado"
+                        }
+                      />
+                      <InfoItem
+                        label="Tempo de resposta"
+                        value={
+                          enrichment.website_response_time_ms !== null ? (
+                            <span className="flex items-center gap-1.5">
+                              <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                              <span className={
+                                enrichment.website_response_time_ms < 3000
+                                  ? "text-emerald-600"
+                                  : "text-orange-600"
+                              }>
+                                {enrichment.website_response_time_ms} ms
+                              </span>
+                            </span>
+                          ) : "Nao informado"
+                        }
+                      />
+                      {websiteError && (
+                        <InfoItem
+                          label="Erro ao acessar"
+                          value={
+                            <span className="flex items-center gap-1.5 text-destructive">
+                              <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                              <span className="text-xs">{websiteError}</span>
+                            </span>
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Outros sinais do enrichment */}
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <InfoItem
-                    label="Status do site"
-                    value={formatNullable(enrichment.website_status)}
-                  />
-                  <InfoItem
-                    label="URL final"
-                    value={formatNullable(enrichment.website_final_url)}
-                  />
-                  <InfoItem
-                    label="HTTPS"
-                    value={enrichment.website_has_ssl === null ? "Nao informado" : enrichment.website_has_ssl ? "Sim" : "Nao"}
-                  />
-                  <InfoItem
-                    label="Mobile / viewport"
-                    value={enrichment.website_has_meta_viewport === null ? "Nao informado" : enrichment.website_has_meta_viewport ? "Sim" : "Nao"}
-                  />
-                  <InfoItem
-                    label="Ano de copyright"
-                    value={formatNullable(enrichment.website_copyright_year)}
-                  />
-                  <InfoItem
-                    label="Score de qualidade do site"
-                    value={formatNullable(enrichment.website_quality_score)}
-                  />
+                  {!websiteAnalysisUsed && (
+                    <>
+                      <InfoItem
+                        label="Status do site"
+                        value={formatNullable(enrichment.website_status)}
+                      />
+                      <InfoItem
+                        label="Score de qualidade do site"
+                        value={formatNullable(enrichment.website_quality_score)}
+                      />
+                    </>
+                  )}
                   <InfoItem
                     label="Telefone valido"
                     value={enrichment.phone_valid === null ? "Nao informado" : enrichment.phone_valid ? "Sim" : "Nao"}
