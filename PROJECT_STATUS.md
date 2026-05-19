@@ -8,6 +8,7 @@ Concluido:
 - Secoes implementadas: ticker, header, hero, mockup, prova dark, cards coloridos, como funciona, comparacao, pricing preview, FAQ, CTA final e footer
 - Copy comercial mantida honesta: provider mock na demo, Google Places opcional via API key, WhatsApp manual, OpenAI real e CRM avancado como roadmap
 - Dashboard interno dark command center e rotas privadas nao foram alterados
+- Paleta refinada apos revisao visual: menos neon/rosa, mais SaaS B2B clean com azul, verde, navy, branco/off-white e amarelo suave
 
 Proximo passo visual:
 - Validar responsividade e conversao da landing com beta fechado

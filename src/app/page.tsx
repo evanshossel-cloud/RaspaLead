@@ -11,7 +11,7 @@ import { StatsSection } from "@/components/marketing/stats-section";
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#fff8dc] text-black">
+    <main className="min-h-screen overflow-x-hidden bg-[#F8FAFC] text-[#0F172A]">
       <MarketingHeader />
       <HeroSection />
       <StatsSection />

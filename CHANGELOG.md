@@ -34,6 +34,23 @@
 - `pnpm typecheck` passou
 - `pnpm build` deve ser registrado no relatorio final desta tarefa
 
+---
+
+## 2026-05-19 - Refinamento da paleta da landing
+
+### Alterado
+
+- Paleta da landing publica refinada para uma estetica SaaS B2B mais limpa, proxima de Dados Premium
+- Ticker, header, hero, mockup, cards, secoes dark, pricing, FAQ, CTA final e footer passaram a usar azul forte, navy, branco/off-white, verde e amarelo suave
+- Rosa/neon e excesso de cores saturadas foram removidos ou reduzidos
+- Cards brutalist mantiveram bordas pretas, sombras offset, tipografia bold e estrutura visual forte
+
+### Nao alterado
+
+- Dashboard interno
+- Rotas privadas
+- Auth, Supabase, Inngest, providers, schema e Server Actions
+
 ## 2026-05-18 — Direcao visual da landing page registrada
 
 ### Decisao

@@ -6,6 +6,7 @@
 - Componentes de marketing criados em `src/components/marketing/`
 - Implementados: ticker, header, hero, mockup de busca, prova dark, cards coloridos, como funciona, comparacao, pricing preview, FAQ, CTA final e footer
 - Copy ajustada para nao prometer OpenAI real, CRM avancado ou Google Places automatico como recursos totalmente ativos
+- Paleta refinada para SaaS B2B clean: azul forte, navy, branco/off-white, verde e amarelo suave; rosa/neon reduzido/removido
 - Proxima etapa de marketing: validar conversao e criar `/pricing` real quando planos estiverem definidos
 
 ## Concluidas

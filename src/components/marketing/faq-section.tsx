@@ -39,10 +39,10 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="bg-[#fff8dc] px-4 py-16 text-black md:px-6 lg:px-8">
+    <section id="faq" className="bg-[#F8FAFC] px-4 py-16 text-[#0F172A] md:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-3xl">
-          <p className="text-sm font-black uppercase tracking-[0.18em] text-[#ff4fa3]">FAQ</p>
+          <p className="text-sm font-black uppercase tracking-[0.18em] text-[#059669]">FAQ</p>
           <h2 className="mt-3 font-display text-4xl font-black uppercase leading-none tracking-normal md:text-6xl">
             Perguntas que evitam confusao antes da demo
           </h2>
@@ -50,7 +50,7 @@ export function FaqSection() {
 
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
           {faqs.map((faq) => (
-            <article key={faq.question} className="rounded-[18px] border-4 border-black bg-white p-5 shadow-[6px_6px_0_#000]">
+            <article key={faq.question} className="rounded-[18px] border-4 border-[#050505] bg-white p-5 shadow-[6px_6px_0_#050505]">
               <h3 className="font-display text-xl font-black uppercase leading-tight tracking-normal">{faq.question}</h3>
               <p className="mt-4 text-sm font-bold leading-6 text-black/68">{faq.answer}</p>
             </article>

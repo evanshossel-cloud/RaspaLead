@@ -4,6 +4,17 @@
 
 A home publica (`src/app/page.tsx`) agora usa uma composicao de componentes em `src/components/marketing/` com estetica brutalist SaaS B2B.
 
+### Refinamento de paleta 2026-05-19
+
+A landing manteve a linguagem brutalist premium (bordas pretas, sombras offset, mockups, tipografia bold e CTAs grandes), mas a paleta foi refinada para uma estetica SaaS B2B mais limpa e proxima de Dados Premium:
+- Base: `#F8FAFC`, `#FFFDF3`, branco e texto `#0F172A`
+- Borda: preto quase absoluto `#050505`
+- CTA principal: azul forte `#155EEF`
+- Apoio: azul claro `#EAF2FF`, verde claro `#E9FBEF`, verde `#059669`
+- Destaque pontual: amarelo suave `#FFF3B0`
+- Secoes dark: navy `#0B1220` e `#101828`
+- Rosa/neon e excesso de cards saturados foram removidos da landing
+
 Componentes criados:
 - `marketing-header.tsx`
 - `hero-section.tsx`

@@ -9,10 +9,10 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="bg-[#060606] px-4 py-16 text-white md:px-6 lg:px-8">
+    <section className="bg-[#0B1220] px-4 py-16 text-white md:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-black uppercase tracking-[0.18em] text-[#ffe34f]">Impacto operacional</p>
+          <p className="text-sm font-black uppercase tracking-[0.18em] text-[#93C5FD]">Impacto operacional</p>
           <h2 className="mt-3 font-display text-4xl font-black uppercase leading-none tracking-normal md:text-6xl">
             O que sua operacao ganha
           </h2>
@@ -23,9 +23,9 @@ export function StatsSection() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {stats.map(({ label, value, icon: Icon }) => (
-            <div key={label} className="rounded-[18px] border-[3px] border-[#ffe34f] bg-[#141414] p-6 shadow-[7px_7px_0_#ffe34f]">
-              <Icon className="h-8 w-8 text-[#ffe34f]" />
-              <p className="mt-8 font-display text-4xl font-black tracking-normal text-[#ffe34f]">{value}</p>
+            <div key={label} className="rounded-[18px] border-[3px] border-[#93C5FD] bg-[#101828] p-6 shadow-[7px_7px_0_#1D4ED8]">
+              <Icon className="h-8 w-8 text-[#93C5FD]" />
+              <p className="mt-8 font-display text-4xl font-black tracking-normal text-[#EAF2FF]">{value}</p>
               <p className="mt-3 text-sm font-black uppercase leading-5 tracking-[0.08em] text-white/72">{label}</p>
             </div>
           ))}

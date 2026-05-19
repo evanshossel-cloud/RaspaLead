@@ -11,11 +11,11 @@ const brandName = process.env.NEXT_PUBLIC_BRAND_NAME ?? "RaspaLead";
 
 export function MarketingFooter() {
   return (
-    <footer className="border-t-4 border-black bg-black px-4 py-12 text-white md:px-6 lg:px-8">
+    <footer className="border-t-4 border-[#050505] bg-[#0B1220] px-4 py-12 text-white md:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_1.9fr]">
         <div>
           <Link href="/" className="inline-flex items-center gap-3">
-            <span className="grid h-12 w-12 place-items-center rounded-[10px] border-[3px] border-white bg-[#ffe34f] text-black shadow-[4px_4px_0_#fff]">
+            <span className="grid h-12 w-12 place-items-center rounded-[10px] border-[3px] border-white bg-[#155EEF] text-white shadow-[4px_4px_0_#fff]">
               <span className="font-display text-2xl font-black tracking-normal">R</span>
             </span>
             <span className="font-display text-2xl font-black uppercase tracking-normal">{brandName}</span>
@@ -28,7 +28,7 @@ export function MarketingFooter() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {columns.map((column) => (
             <div key={column.title}>
-              <h3 className="text-sm font-black uppercase tracking-[0.18em] text-[#ffe34f]">{column.title}</h3>
+              <h3 className="text-sm font-black uppercase tracking-[0.18em] text-[#93C5FD]">{column.title}</h3>
               <div className="mt-4 space-y-3">
                 {column.links.map((item) => (
                   <p key={item} className="text-sm font-bold text-white/65">
