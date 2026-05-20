@@ -104,7 +104,7 @@ export function DetailHeroSkeleton() {
           <Skeleton className="h-4 w-full max-w-2xl" />
           <Skeleton className="h-4 w-4/5 max-w-2xl" />
         </div>
-        <div className="space-y-4 rounded-2xl border border-border/70 bg-background/60 p-5">
+        <div className="space-y-4 border border-border bg-muted/40 p-5">
           <Skeleton className="h-3 w-32" />
           <Skeleton className="h-10 w-24" />
           <Skeleton className="h-2 w-full" />

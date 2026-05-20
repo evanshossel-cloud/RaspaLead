@@ -1,22 +1,32 @@
 # RaspaLead
 
+## Atualizacao 2026-05-20 - Identidade visual unificada
+
+Todo o produto agora segue a identidade brutalist SaaS B2B clean aprovada na landing publica.
+
+- Landing, auth e app interno usam a mesma base clara/off-white, azul como CTA principal, verde e amarelo suave como apoio, bordas pretas fortes, sombras offset e tipografia bold
+- `/login`, `/register`, dashboard, buscas, leads, billing, settings e CRM foram alinhados visualmente com `/`
+- O visual antigo dark command center foi removido das rotas principais e o app foi fixado no tema claro
+- A landing nao foi reescrita; ela permanece como fonte visual do produto
+- Nao houve alteracao em Supabase, Inngest, providers, schema, RLS, Server Actions ou `.env.local`
+
 ## Atualizacao 2026-05-19 - Landing publica brutalist
 
 A landing publica (`/`) foi redesenhada para uma estetica brutalist SaaS B2B inspirada em Dados Premium e nas imagens de referencia do projeto.
 
 - Nova camada de marketing em `src/components/marketing/`
 - Secoes implementadas: header com ticker, hero, mockup de busca, prova dark, cards coloridos, como funciona, comparacao, pricing preview, FAQ, CTA final e footer
-- Separacao visual preservada: landing publica clara/brutalist; dashboard interno dark command center
+- Identidade visual inicial da landing mantida como referencia para todo o produto
 - Copy honesta: demo pode rodar com provider mock; Google Places depende de API key; WhatsApp e manual via `wa.me`; OpenAI real e CRM avancado seguem como roadmap
 - Nao houve alteracao em Supabase, Inngest, providers, schema, Server Actions ou rotas privadas
 
-SaaS multi-tenant de prospeccao local com dashboard estilo command center, auth via Supabase, jobs em background com Inngest, deduplicacao centralizada e exportacao XLSX de leads.
+SaaS multi-tenant de prospeccao local com visual brutalist SaaS B2B clean, auth via Supabase, jobs em background com Inngest, deduplicacao centralizada e exportacao XLSX de leads.
 
 ## Visao geral
 
 - Stack: `Next.js 16`, `React 19`, `TypeScript`, `Tailwind CSS v4`, `shadcn/ui`, `Supabase SSR`, `Inngest`, `exceljs`
-- Tema do dashboard: dark premium command center (app interno)
-- Tema da landing: brutalist SaaS B2B — off-white, headlines uppercase, marca-texto colorido, secoes dark (a implementar)
+- Tema unificado: brutalist SaaS B2B clean em landing, auth e app interno
+- Paleta: `#F8FAFC`, `#FFFDF3`, `#0F172A`, `#050505`, `#155EEF`, `#EAF2FF`, `#059669`, `#E9FBEF`, `#FFF3B0`
 - Multi-tenant com workspace ativo, RLS e rotas protegidas por middleware
 - Provider de leads configuravel via `LEAD_PROVIDER` (default: `mock`)
 - Google Places em modo busca rasa para criacao de leads; Place Details acionado sob demanda no enriquecimento
@@ -153,12 +163,12 @@ npx inngest-cli@latest dev
 src/
   app/
     (auth)/         # login, register, callback
-    (dashboard)/    # rotas protegidas — estilo dark premium
-    page.tsx        # landing publica — estilo brutalist SaaS (a refatorar)
+    (dashboard)/    # rotas protegidas com identidade brutalist SaaS B2B clean
+    page.tsx        # landing publica brutalist SaaS B2B clean
   components/
-    layout/         # sidebar, header, theme toggle (dashboard)
+    layout/         # sidebar, header e workspace switcher do app interno
     shared/         # componentes reutilizaveis internos
-    public/         # (a criar) componentes da landing publica
+    marketing/      # componentes da landing publica
     ui/             # shadcn/ui
   features/leads/
     providers/      # LeadProvider, mock, google-places, mapper

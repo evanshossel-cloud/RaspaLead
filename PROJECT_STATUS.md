@@ -1,5 +1,18 @@
 # PROJECT STATUS
 
+## Atualizacao 2026-05-20 - Identidade visual unificada
+
+Concluido:
+- Landing publica, auth e app interno agora seguem a mesma identidade brutalist SaaS B2B clean
+- `/login`, `/register`, `/dashboard`, `/searches`, `/searches/new`, `/searches/[id]`, `/leads`, `/leads/[id]`, `/billing`, `/settings` e `/crm` foram alinhados visualmente
+- Header, sidebar, workspace switcher, cards, formularios, badges, botoes, toasts e placeholders usam base clara, bordas pretas, sombras offset, CTA azul, verde de sucesso e amarelo suave pontual
+- Tema claro fixado para remover o retorno do visual antigo dark command center nas rotas principais
+- CRM permanece placeholder/teaser, sem implementar feature nova
+- Nenhuma logica de produto, Supabase, Inngest, providers, schema, RLS, Server Actions ou `.env.local` foi alterada
+
+Proximo passo visual:
+- Validar a experiencia com usuarios beta em desktop e mobile, mantendo a landing como fonte de verdade da identidade
+
 ## Atualizacao 2026-05-19 - Landing publica brutalist SaaS B2B
 
 Concluido:
@@ -7,7 +20,7 @@ Concluido:
 - Componentes de marketing criados em `src/components/marketing/`
 - Secoes implementadas: ticker, header, hero, mockup, prova dark, cards coloridos, como funciona, comparacao, pricing preview, FAQ, CTA final e footer
 - Copy comercial mantida honesta: provider mock na demo, Google Places opcional via API key, WhatsApp manual, OpenAI real e CRM avancado como roadmap
-- Dashboard interno dark command center e rotas privadas nao foram alterados
+- A landing foi mantida como fonte visual para a unificacao posterior do app
 - Paleta refinada apos revisao visual: menos neon/rosa, mais SaaS B2B clean com azul, verde, navy, branco/off-white e amarelo suave
 
 Proximo passo visual:
@@ -90,11 +103,11 @@ Proximo passo visual:
 2. OpenAI real para mensagens contextualizadas
 3. Edicao e aprovacao de mensagem antes de enviar
 4. Beta fechado com 3 nichos/cidades reais
-5. Nova landing no estilo brutalist SaaS B2B (referencias: Combustivel Justo + dadospremium.com)
+5. Refinar conversao da landing brutalist SaaS B2B existente
 6. Checkout e planos reais
 
-## Identidade visual — decisao registrada (2026-05-18)
+## Identidade visual — decisao atualizada (2026-05-20)
 
-Duas camadas visuais separadas e definitivas:
-- **Dashboard interno** (`/app/*`): dark premium command center — mantido, nao alterado
-- **Landing publica** (`/`, `/pricing`, paginas de marketing): brutalist SaaS B2B — a implementar
+Identidade visual unica:
+- **Landing publica, auth e app interno**: brutalist SaaS B2B clean com base clara/off-white, CTA azul, bordas pretas fortes, sombras offset, cards brancos e tipografia bold
+- **Dark/navy**: usado apenas como contraste pontual, nao como base inteira das rotas principais

@@ -40,51 +40,51 @@ export default async function BillingPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow="RaspaLead // Receita"
+        eyebrow="RaspaLead · Receita"
         title="Faturamento"
-        description="Acompanhe o plano atual, a franquia de creditos e a estrutura de assinatura do seu workspace."
+        description="Acompanhe o plano atual, a franquia de créditos e a estrutura de assinatura do seu workspace."
       />
 
       <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
-        <Card>
-          <CardContent className="relative p-6">
-            <div className="pointer-events-none absolute left-0 top-0 h-36 w-36 rounded-full bg-primary/16 blur-3xl" />
-            <div className="relative space-y-5">
+        {/* Current plan hero */}
+        <Card className="border-2 border-border shadow-[4px_4px_0_#0a0a0a]">
+          <CardContent className="p-6">
+            <div className="space-y-5">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  <p className="font-data text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
                     Plano ativo
                   </p>
-                  <h2 className="font-display mt-2 text-4xl font-bold tracking-[-0.04em] text-foreground">
+                  <h2 className="font-display mt-2 text-4xl font-black uppercase tracking-tight text-foreground">
                     {currentPlan?.name ?? "Plano base"}
                   </h2>
                   <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-                    Creditos renovados mensalmente para sustentar a prospeccao local e o enriquecimento progressivo da operacao.
+                    Créditos renovados mensalmente para sustentar a prospecção local e o enriquecimento progressivo da operação.
                   </p>
                 </div>
-                <Badge variant="secondary">Workspace ativo</Badge>
+                <Badge className="border border-border font-bold uppercase">Workspace ativo</Badge>
               </div>
 
-              <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+              <div className="border border-border bg-[#EAF2FF] p-5">
                 <div className="flex items-end justify-between gap-4">
                   <div>
-                    <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                      Consumo de creditos
+                    <p className="font-data text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                      Créditos restantes
                     </p>
-                    <p className="font-display mt-2 text-4xl font-bold tracking-[-0.04em] text-foreground">
+                    <p className="font-display mt-2 text-4xl font-black tracking-tight text-foreground">
                       {creditsBalance.toLocaleString("pt-BR")}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                      Utilizacao
+                    <p className="font-data text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                      Utilização
                     </p>
-                    <p className="mt-2 text-sm text-muted-foreground">{usagePercent}% usados</p>
+                    <p className="mt-2 text-sm font-bold text-foreground">{usagePercent}%</p>
                   </div>
                 </div>
-                <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted/70">
+                <div className="mt-4 h-2 overflow-hidden bg-white/60">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
+                    className="h-full bg-primary transition-all"
                     style={{ width: `${usagePercent}%` }}
                   />
                 </div>
@@ -105,31 +105,32 @@ export default async function BillingPage() {
             icon={CreditCard}
           />
           <MetricCard
-            title="Creditos restantes"
+            title="Créditos restantes"
             value={creditsBalance.toLocaleString("pt-BR")}
-            description={`de ${quota.toLocaleString("pt-BR")} este mes`}
+            description={`de ${quota.toLocaleString("pt-BR")} este mês`}
             icon={Zap}
           />
           <MetricCard
-            title="Renovacao"
-            value="Todo mes"
-            description="Creditos renovam no dia 1"
+            title="Renovação"
+            value="Todo mês"
+            description="Créditos renovam no dia 1"
             icon={CreditCard}
           />
         </div>
       </div>
 
+      {/* Plans grid */}
       <div className="space-y-4">
-        <h2 className="font-display text-2xl font-semibold tracking-[-0.03em] text-foreground">
-          Planos disponiveis
+        <h2 className="font-display text-2xl font-black uppercase tracking-tight text-foreground">
+          Planos disponíveis
         </h2>
         {plans.length === 0 ? (
           <EmptyState
             icon={CreditCard}
-            title="Nenhum plano disponivel no momento"
-            description="Assim que os planos forem publicados, voce podera comparar creditos, limites e recursos desta central."
+            title="Nenhum plano disponível no momento"
+            description="Assim que os planos forem publicados, você poderá comparar créditos, limites e recursos desta central."
             action={
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" className="border-2 border-border shadow-[2px_2px_0_#0a0a0a]">
                 <Link href="/dashboard">Voltar ao dashboard</Link>
               </Button>
             }
@@ -141,42 +142,49 @@ export default async function BillingPage() {
               const features = Array.isArray(plan.features) ? (plan.features as string[]) : [];
 
               return (
-                <Card key={plan.id} className={isCurrent ? "glow-primary border-primary/30" : ""}>
-                  <CardHeader className="pb-3">
+                <Card
+                  key={plan.id}
+                  className={
+                    isCurrent
+                      ? "border-2 border-primary bg-[#EAF2FF] shadow-[4px_4px_0_#155EEF]"
+                      : "border-2 border-border shadow-[3px_3px_0_#0a0a0a]"
+                  }
+                >
+                  <CardHeader className="border-b border-border/20 pb-4">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-base">{plan.name}</CardTitle>
-                      {isCurrent && <Badge>Atual</Badge>}
+                      <CardTitle className="font-black uppercase tracking-tight">{plan.name}</CardTitle>
+                      {isCurrent && <Badge className="border border-border font-bold uppercase">Atual</Badge>}
                     </div>
                     <CardDescription className="text-xs">{plan.description}</CardDescription>
                     <div className="pt-2">
-                      <span className="font-display text-3xl font-bold tracking-[-0.04em]">
-                        {plan.price_brl === 0 ? "Gratis" : `R$ ${(plan.price_brl / 100).toFixed(0)}`}
+                      <span className="font-display text-3xl font-black tracking-tight">
+                        {plan.price_brl === 0 ? "Grátis" : `R$ ${(plan.price_brl / 100).toFixed(0)}`}
                       </span>
                       {plan.price_brl > 0 && (
-                        <span className="text-muted-foreground text-sm">/mes</span>
+                        <span className="text-sm text-muted-foreground">/mês</span>
                       )}
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-1 text-xs text-muted-foreground">
-                      <p>{plan.monthly_credit_quota.toLocaleString("pt-BR")} creditos/mes</p>
+                  <CardContent className="space-y-4 pt-4">
+                    <div className="space-y-1 border border-border/20 bg-muted/30 p-3 text-xs text-muted-foreground">
+                      <p className="font-bold">{plan.monthly_credit_quota.toLocaleString("pt-BR")} créditos/mês</p>
                       <p>{plan.auto_enrich_top_n} leads enriquecidos/busca</p>
                       {plan.max_searches_per_month !== null && (
-                        <p>Ate {plan.max_searches_per_month} buscas/mes</p>
+                        <p>Até {plan.max_searches_per_month} buscas/mês</p>
                       )}
                     </div>
 
                     <ul className="space-y-2">
                       {features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm text-foreground">
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-[hsl(var(--success))]" />
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
 
                     <Button
-                      className="w-full"
+                      className="w-full border-2 border-border font-black uppercase"
                       variant={isCurrent ? "outline" : "default"}
                       size="sm"
                       disabled

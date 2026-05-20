@@ -1,5 +1,16 @@
 # CONTEXT
 
+## Atualizacao 2026-05-20 - Identidade visual unificada
+
+A decisao anterior de separar landing clara e dashboard dark foi substituida. O RaspaLead inteiro agora deve seguir a identidade visual da landing aprovada:
+
+- Brutalist SaaS B2B clean em `/`, `/login`, `/register` e todas as rotas protegidas
+- Fundo claro/off-white, cards brancos, bordas pretas fortes, sombras offset e tipografia bold
+- CTA principal azul `#155EEF`, estados positivos em verde `#059669`, apoio em azul claro `#EAF2FF`, verde claro `#E9FBEF` e amarelo suave `#FFF3B0`
+- Dark/navy `#0B1220` apenas como contraste pontual, nunca como base inteira do app
+- O visual antigo dark command center nao deve voltar nas rotas principais
+- Esta mudanca foi visual: nenhuma logica de produto, Supabase, Inngest, providers, schema, RLS ou Server Actions foi alterada
+
 ## Atualizacao 2026-05-19 - Landing publica redesenhada
 
 A home publica (`src/app/page.tsx`) agora usa uma composicao de componentes em `src/components/marketing/` com estetica brutalist SaaS B2B.
@@ -29,8 +40,8 @@ Componentes criados:
 - `marketing-footer.tsx`
 
 Regras mantidas:
-- Dashboard interno continua dark premium command center
-- Landing e marketing usam off-white, preto, amarelo, rosa, azul, verde, bordas pretas e sombras offset
+- Landing, auth e dashboard interno usam a mesma identidade brutalist SaaS B2B clean
+- Landing e marketing usam off-white, preto, azul, verde, amarelo suave, bordas pretas e sombras offset
 - A landing nao promete OpenAI real, CRM avancado ou Google Places automatico como recursos totalmente ativos
 - Google Places e descrito como opcional e dependente de API key
 - Demo pode rodar com provider mock
@@ -38,7 +49,7 @@ Regras mantidas:
 
 ## Produto
 
-RaspaLead e um SaaS de prospeccao local para gerar listas de empresas, enriquecer sinais comerciais, sugerir mensagens e operar os leads dentro de uma interface command center.
+RaspaLead e um SaaS de prospeccao local para gerar listas de empresas, enriquecer sinais comerciais, sugerir mensagens e operar os leads dentro de uma interface brutalist SaaS B2B clean.
 
 ## Stack atual
 
@@ -279,17 +290,17 @@ O `place_id` do Google Places e salvo em `leads.place_id` no momento da insercao
 - Mockado: enrichment de leads sem place_id, mensagens com OpenAI, website enrichment real
 - Google Places: busca rasa + Place Details no enrichment sob demanda
 
-## Identidade visual — duas camadas separadas
+## Historico visual superseded
 
-O RaspaLead possui dois contextos visuais distintos que NAO devem ser misturados:
+Esta secao registra a decisao antiga de duas camadas visuais. Ela foi substituida em 2026-05-20 pela identidade unica brutalist SaaS B2B clean em landing, auth e app interno.
 
-### Dashboard interno — command center dark premium
+A referencia de composicao abaixo permanece historica, mas nao deve ser usada para reintroduzir dashboard dark.
 
-- Tema: dark, sofisticado, command center
-- Paleta: fundo escuro, bordas sutis, acentos em primario/secundario
-- Componentes: shadcn/ui com Tailwind v4 customizado
-- Tipografia: hierarquica, data-driven, sem exageros visuais
-- Tom: ferramenta profissional, discreta, de alto desempenho
+### Registro antigo — dashboard dark substituido
+
+- Substituido pela base clara/off-white da landing
+- Dark/navy fica restrito a secoes pontuais de contraste
+- Componentes internos usam borda preta, sombra offset, cards brancos e CTA azul
 
 ### Landing page e paginas publicas — brutalist SaaS B2B
 
@@ -356,18 +367,21 @@ Inspiracoes visuais documentadas:
 - Numeros grandes e concretos: "1.200 empresas prospectadas em 3 minutos"
 - Sem termos tecnicos no hero — foco no resultado do usuario
 
-### Regra de separacao
+### Regra atual de identidade
 
 ```
-/app/*        → dark premium command center (dashboard interno)
-/             → brutalist SaaS B2B (landing publica)
-/pricing      → brutalist SaaS B2B
-/features     → brutalist SaaS B2B
-paginas auth  → neutras, transicao entre os dois contextos
+/             -> brutalist SaaS B2B clean
+/login        -> brutalist SaaS B2B clean
+/register     -> brutalist SaaS B2B clean
+/dashboard    -> brutalist SaaS B2B clean
+/searches*    -> brutalist SaaS B2B clean
+/leads*       -> brutalist SaaS B2B clean
+/billing      -> brutalist SaaS B2B clean
+/settings     -> brutalist SaaS B2B clean
+/crm          -> brutalist SaaS B2B clean
 ```
 
-Nunca usar o estilo brutalist dentro do dashboard.
-Nunca usar o estilo dark command center na landing publica.
+O bloco acima era a regra antiga e esta superseded. A regra vigente e identidade brutalist SaaS B2B clean em `/`, auth e todas as rotas internas. Nao reintroduzir o visual dark command center nas rotas principais.
 
 ## Decisoes importantes
 
@@ -375,4 +389,4 @@ Nunca usar o estilo dark command center na landing publica.
 - Service role restrito aos jobs do Inngest
 - Dedupe e scoring centralizados — qualquer provider os herda
 - `processing_metadata` e salvo em todos os cenarios (sucesso e falha) para facilitar diagnostico
-- Identidade visual dual: dashboard dark premium (app) + brutalist SaaS (landing)
+- Identidade visual unificada: brutalist SaaS B2B clean em landing, auth e app interno

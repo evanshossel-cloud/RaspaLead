@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## 2026-05-20 - Unificacao da identidade visual do app
+
+### Alterado
+
+- Landing, auth e app interno agora seguem a mesma identidade brutalist SaaS B2B clean
+- `/login`, `/register`, `/dashboard`, `/searches`, `/searches/new`, `/searches/[id]`, `/leads`, `/leads/[id]`, `/billing`, `/settings` e `/crm` foram alinhados com a landing aprovada
+- Componentes de UI, header, sidebar, workspace switcher, formularios, cards, badges, loading states e toasts receberam base clara, bordas pretas fortes, sombras offset, CTA azul e estados verdes
+- O app foi fixado no tema claro para evitar retorno do visual antigo dark command center
+- CRM segue como teaser/placeholder visual, sem feature nova
+
+### Nao alterado
+
+- Supabase, Inngest, providers, schema, RLS, Server Actions e `.env.local`
+- Conexoes com Google Places/OpenAI alem do que ja existia
+- Checkout, CRM funcional ou automacoes novas
+
+### Validacoes
+
+- `pnpm typecheck` passou antes e depois do redesign visual
+- `pnpm build` registrado no relatorio final
+
+---
+
 ## 2026-05-19 - Redesign brutalist da landing publica
 
 ### Adicionado
@@ -24,7 +47,7 @@
 
 ### Nao alterado
 
-- Dashboard interno dark command center
+- App interno ainda nao havia sido unificado nesta etapa
 - Rotas privadas
 - Supabase, Inngest, providers, schema e Server Actions
 - `/login` e `/register`
@@ -47,7 +70,7 @@
 
 ### Nao alterado
 
-- Dashboard interno
+- App interno ainda nao havia sido unificado nesta etapa
 - Rotas privadas
 - Auth, Supabase, Inngest, providers, schema e Server Actions
 
@@ -55,11 +78,10 @@
 
 ### Decisao
 
-Definida identidade visual publica do RaspaLead separada do dashboard interno.
+Definida identidade visual publica do RaspaLead. Esta decisao foi substituida em 2026-05-20 pela identidade unificada em todo o produto.
 
-Duas camadas visuais definitivas:
-- **Dashboard interno** (`/app/*`): dark premium command center — mantido, nao alterado
-- **Landing publica** (`/`, `/pricing`, paginas de marketing): brutalist SaaS B2B — a implementar
+Duas camadas visuais foram registradas naquele momento, mas a regra atual e unificada:
+- **Landing publica, auth e app interno**: brutalist SaaS B2B clean
 
 ### Referencias visuais documentadas
 
@@ -69,7 +91,7 @@ Duas camadas visuais definitivas:
 
 ### Documentado em
 
-- `CONTEXT.md` — secao "Identidade visual — duas camadas separadas" com anatomia detalhada, paleta e regras de separacao
+- `CONTEXT.md` registra o historico visual e a regra atual unificada
 - `TASKS.md` — novas tarefas de landing: revisao atual, implementacao nova, componentes publicos, pricing, FAQ
 - `PROJECT_STATUS.md` — tabela de status visual e proximos passos atualizados
 

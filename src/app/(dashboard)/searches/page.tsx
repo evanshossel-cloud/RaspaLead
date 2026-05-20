@@ -78,7 +78,7 @@ export default async function SearchesPage() {
         title="Buscas"
         description="Monitore a esteira de extracao, acompanhe o progresso em tempo real e abra cada busca como uma operacao independente."
         action={
-          <Button asChild>
+          <Button asChild className="border-2 border-border font-black uppercase shadow-[2px_2px_0_#0a0a0a]">
             <Link href="/searches/new">
               <Plus className="mr-2 h-4 w-4" />
               Nova busca
@@ -89,21 +89,19 @@ export default async function SearchesPage() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {[
-          { label: "Buscas totais", value: searches.length, tone: "text-foreground" },
-          { label: "Em processamento", value: runningCount, tone: "text-secondary" },
-          { label: "Concluidas", value: completedCount, tone: "text-[hsl(var(--success))]" },
-          { label: "Falharam", value: failedCount, tone: "text-destructive" },
+          { label: "Buscas totais", value: searches.length, tone: "text-foreground", accent: "bg-card" },
+          { label: "Em processamento", value: runningCount, tone: "text-primary", accent: "bg-[#EAF2FF]" },
+          { label: "Concluídas", value: completedCount, tone: "text-success", accent: "bg-[#E9FBEF]" },
+          { label: "Falharam", value: failedCount, tone: "text-destructive", accent: "bg-red-50" },
         ].map((item) => (
-          <Card key={item.label}>
-            <CardContent className="p-5">
-              <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                {item.label}
-              </p>
-              <p className={`font-display mt-3 text-4xl font-bold tracking-[-0.04em] ${item.tone}`}>
-                {item.value.toLocaleString("pt-BR")}
-              </p>
-            </CardContent>
-          </Card>
+          <div key={item.label} className={`border-2 border-border p-5 shadow-[3px_3px_0_#0a0a0a] ${item.accent}`}>
+            <p className="font-data text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {item.label}
+            </p>
+            <p className={`font-display mt-3 text-4xl font-black tracking-tight ${item.tone}`}>
+              {item.value.toLocaleString("pt-BR")}
+            </p>
+          </div>
         ))}
       </div>
 
@@ -111,9 +109,9 @@ export default async function SearchesPage() {
         <EmptyState
           icon={Search}
           title="Nenhuma busca criada ainda"
-          description="Crie sua primeira busca para encontrar empresas locais qualificadas e iniciar sua operacao de prospeccao."
+          description="Crie sua primeira busca para encontrar empresas locais qualificadas e iniciar sua operação de prospecção."
           action={
-            <Button asChild>
+            <Button asChild className="border-2 border-border font-black uppercase shadow-[2px_2px_0_#0a0a0a]">
               <Link href="/searches/new">
                 <Plus className="mr-2 h-4 w-4" />
                 Criar nova busca
@@ -122,13 +120,13 @@ export default async function SearchesPage() {
           }
         />
       ) : (
-        <Card className="overflow-hidden">
-          <CardHeader className="border-b border-border/70 pb-4">
+        <Card className="overflow-hidden border-2 border-border shadow-[4px_4px_0_#0a0a0a]">
+          <CardHeader className="border-b-2 border-border pb-4">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <CardTitle className="text-base">Fila de buscas</CardTitle>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Cada busca representa uma operacao de prospeccao com processamento e leads vinculados.
+                <CardTitle className="font-black uppercase tracking-tight">Fila de buscas</CardTitle>
+                <p className="mt-1.5 text-sm text-muted-foreground">
+                  Cada busca representa uma operação de prospecção com processamento e leads vinculados.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
@@ -143,58 +141,58 @@ export default async function SearchesPage() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="space-y-4 p-4 md:hidden">
+            {/* Mobile cards */}
+            <div className="space-y-3 p-4 md:hidden">
               {searches.map((search) => (
-                <Card key={search.id} className="overflow-hidden bg-background/60">
-                  <CardContent className="space-y-4 p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="font-medium text-foreground">{search.name}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{formatLocation(search)}</p>
-                      </div>
-                      <Badge variant={statusVariants[search.status]}>
-                        {statusLabels[search.status]}
-                      </Badge>
+                <div key={search.id} className="border border-border bg-card p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-foreground">{search.name}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{formatLocation(search)}</p>
                     </div>
+                    <Badge variant={statusVariants[search.status]}>
+                      {statusLabels[search.status]}
+                    </Badge>
+                  </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="rounded-xl border border-border/70 bg-card/75 p-3">
-                        <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Solicitados</p>
-                        <p className="mt-2 text-lg font-semibold text-foreground">{search.quantity_requested}</p>
-                      </div>
-                      <div className="rounded-xl border border-border/70 bg-card/75 p-3">
-                        <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Encontrados</p>
-                        <p className="mt-2 text-lg font-semibold text-foreground">{search.quantity_found}</p>
-                      </div>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <div className="border border-border bg-muted/40 p-3">
+                      <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Solicitados</p>
+                      <p className="mt-1.5 text-lg font-black text-foreground">{search.quantity_requested}</p>
                     </div>
-
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{search.niche ?? "Nicho nao definido"}</span>
-                        <span className="font-data text-foreground">{search.progress}%</span>
-                      </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-muted/70">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
-                          style={{ width: `${search.progress}%` }}
-                        />
-                      </div>
-                      <p className="font-data text-[11px] text-muted-foreground">
-                        Criada em {formatDate(search.created_at)}
-                      </p>
+                    <div className="border border-border bg-[#EAF2FF] p-3">
+                      <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Encontrados</p>
+                      <p className="mt-1.5 text-lg font-black text-primary">{search.quantity_found}</p>
                     </div>
+                  </div>
 
-                    <Button asChild size="sm" variant="outline" className="w-full">
-                      <Link href={`/searches/${search.id}`}>
-                        <Eye className="h-4 w-4" />
-                        Abrir detalhes
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                  <div className="mt-3 space-y-2">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{search.niche ?? "Nicho não definido"}</span>
+                      <span className="font-bold text-foreground">{search.progress}%</span>
+                    </div>
+                    <div className="h-1.5 overflow-hidden bg-muted">
+                      <div
+                        className="h-full bg-primary transition-all"
+                        style={{ width: `${search.progress}%` }}
+                      />
+                    </div>
+                    <p className="font-data text-[11px] text-muted-foreground">
+                      Criada em {formatDate(search.created_at)}
+                    </p>
+                  </div>
+
+                  <Button asChild size="sm" variant="outline" className="mt-3 w-full border-2 border-border">
+                    <Link href={`/searches/${search.id}`}>
+                      <Eye className="h-4 w-4" />
+                      Abrir detalhes
+                    </Link>
+                  </Button>
+                </div>
               ))}
             </div>
 
+            {/* Desktop table */}
             <div className="hidden overflow-x-auto md:block">
               <table className="data-table min-w-[980px]">
                 <thead>
@@ -202,31 +200,31 @@ export default async function SearchesPage() {
                     <th>Nome</th>
                     <th>Local</th>
                     <th>Nicho</th>
-                    <th>Quantidade solicitada</th>
+                    <th>Solicitados</th>
                     <th>Encontrados</th>
                     <th>Status</th>
                     <th>Progresso</th>
                     <th>Criada em</th>
-                    <th className="text-right">Acoes</th>
+                    <th className="text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {searches.map((search) => (
                     <tr key={search.id}>
                       <td>
-                        <div className="font-medium text-foreground">{search.name}</div>
+                        <div className="font-semibold text-foreground">{search.name}</div>
                         {search.keyword && (
-                          <div className="mt-1 text-xs text-muted-foreground">
+                          <div className="mt-0.5 text-xs text-muted-foreground">
                             Palavra-chave: {search.keyword}
                           </div>
                         )}
                       </td>
                       <td className="text-muted-foreground">{formatLocation(search)}</td>
                       <td className="text-muted-foreground">{search.niche ?? "-"}</td>
-                      <td className="font-data">
+                      <td className="font-data font-semibold">
                         {search.quantity_requested.toLocaleString("pt-BR")}
                       </td>
-                      <td className="font-data">
+                      <td className="font-data font-bold text-primary">
                         {search.quantity_found.toLocaleString("pt-BR")}
                       </td>
                       <td>
@@ -236,12 +234,12 @@ export default async function SearchesPage() {
                       </td>
                       <td>
                         <div className="space-y-1">
-                          <div className="font-data text-sm text-foreground">
+                          <div className="font-data text-sm font-bold text-foreground">
                             {search.progress}%
                           </div>
-                          <div className="h-2 w-28 overflow-hidden rounded-full bg-muted/70">
+                          <div className="h-1.5 w-28 overflow-hidden bg-muted">
                             <div
-                              className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all"
+                              className="h-full bg-primary transition-all"
                               style={{ width: `${search.progress}%` }}
                             />
                           </div>
@@ -251,7 +249,7 @@ export default async function SearchesPage() {
                         {formatDate(search.created_at)}
                       </td>
                       <td className="text-right">
-                        <Button asChild size="sm" variant="outline">
+                        <Button asChild size="sm" variant="outline" className="border-2 border-border">
                           <Link href={`/searches/${search.id}`}>
                             <Eye className="h-4 w-4" />
                             Detalhes

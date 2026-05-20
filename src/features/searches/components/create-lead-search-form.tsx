@@ -238,7 +238,7 @@ export function CreateLeadSearchForm() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+            <div className="border border-border bg-muted/40 p-5">
               <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                 Nicho / Regiao
               </p>
@@ -248,9 +248,9 @@ export function CreateLeadSearchForm() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
-              <div className="rounded-2xl border border-border/70 bg-background/60 p-4">
+              <div className="border border-border bg-muted/40 p-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/12 text-primary">
+                  <div className="flex h-10 w-10 items-center justify-center bg-[#EAF2FF] text-primary">
                     <Radar className="h-4 w-4" />
                   </div>
                   <div>
@@ -263,9 +263,9 @@ export function CreateLeadSearchForm() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-border/70 bg-background/60 p-4">
+              <div className="border border-border bg-muted/40 p-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/12 text-secondary">
+                  <div className="flex h-10 w-10 items-center justify-center bg-[#EAF2FF] text-secondary">
                     <Target className="h-4 w-4" />
                   </div>
                   <div>
@@ -279,7 +279,7 @@ export function CreateLeadSearchForm() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+            <div className="border border-border bg-muted/40 p-5">
               <div className="flex items-center gap-2 text-foreground">
                 <Sparkles className="h-4 w-4 text-primary" />
                 <p className="text-sm font-medium">Oferta usada na operacao</p>
@@ -300,8 +300,8 @@ export function CreateLeadSearchForm() {
               "O status vai de pendente para processando automaticamente.",
               "Cinco leads mockados sao criados e vinculados a busca.",
             ].map((step, index) => (
-              <div key={step} className="flex gap-3 rounded-2xl border border-border/70 bg-background/60 p-4">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/12 font-data text-xs text-primary">
+              <div key={step} className="flex gap-3 border border-border bg-muted/40 p-4">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center bg-[#EAF2FF] rounded-full font-data text-xs text-primary">
                   0{index + 1}
                 </div>
                 <p className="text-sm leading-6 text-muted-foreground">{step}</p>

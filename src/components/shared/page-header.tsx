@@ -18,10 +18,10 @@ export function PageHeader({
   return (
     <div className={cn("flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between", className)}>
       <div className="space-y-2">
-        <p className="font-data text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+        <p className="font-data text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
           {eyebrow}
         </p>
-        <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-foreground md:text-4xl">
+        <h1 className="font-display text-3xl font-black uppercase tracking-tight text-foreground md:text-4xl">
           {title}
         </h1>
         {description && (

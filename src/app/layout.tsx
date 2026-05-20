@@ -39,9 +39,10 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
+          forcedTheme="light"
           enableSystem={false}
-          themes={["dark", "light", "yellow"]}
+          themes={["light"]}
           storageKey="xgryd-theme"
         >
           {children}

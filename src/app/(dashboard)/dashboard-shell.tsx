@@ -31,11 +31,8 @@ export function DashboardShell({
       />
 
       <div className="relative flex flex-1 flex-col overflow-hidden lg:ml-0">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute left-1/4 top-[-12rem] h-72 w-72 rounded-full bg-primary/12 blur-3xl" />
-          <div className="absolute right-[-8rem] top-32 h-80 w-80 rounded-full bg-secondary/10 blur-3xl" />
-          <div className="grid-overlay absolute inset-0 opacity-20" />
-        </div>
+        {/* Subtle grid — barely visible in light mode */}
+        <div className="pointer-events-none absolute inset-0 grid-overlay" />
 
         <AppHeader
           profile={profile}

@@ -20,26 +20,26 @@ export function MetricCard({
   className,
 }: MetricCardProps) {
   return (
-    <Card className={cn("overflow-hidden", className)}>
+    <Card className={cn("overflow-hidden border-2 border-border shadow-[3px_3px_0_#0a0a0a]", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-        <CardTitle className="font-data text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+        <CardTitle className="font-data text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
           {title}
         </CardTitle>
         {Icon && (
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-border/80 bg-muted/40 text-primary">
+          <div className="flex h-9 w-9 items-center justify-center border border-border/40 bg-[#EAF2FF] text-primary">
             <Icon className="h-4 w-4" />
           </div>
         )}
       </CardHeader>
       <CardContent>
-        <div className="font-display text-3xl font-bold tracking-[-0.04em] text-foreground">
+        <div className="font-display text-3xl font-black tracking-tight text-foreground">
           {value}
         </div>
         {description && (
           <p className="mt-2 text-sm text-muted-foreground">{description}</p>
         )}
         {trend && (
-          <p className={cn("mt-2 text-xs font-medium", trend.value >= 0 ? "text-[hsl(var(--success))]" : "text-destructive")}>
+          <p className={cn("mt-2 text-xs font-bold uppercase tracking-wide", trend.value >= 0 ? "text-success" : "text-destructive")}>
             {trend.value >= 0 ? "+" : ""}{trend.value}% {trend.label}
           </p>
         )}

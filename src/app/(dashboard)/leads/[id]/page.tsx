@@ -229,7 +229,7 @@ function InfoItem({
 }) {
   return (
     <div className="space-y-1.5">
-      <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+      <p className="font-data text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {label}
       </p>
       <div className="text-sm leading-6 text-foreground">{value}</div>
@@ -249,17 +249,17 @@ function SignalCard({
   description?: string;
 }) {
   return (
-    <Card>
+    <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
           {title}
         </CardTitle>
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/12 text-primary">
+        <div className="flex h-10 w-10 items-center justify-center bg-[#EAF2FF] text-primary">
           <Icon className="h-4 w-4" />
         </div>
       </CardHeader>
       <CardContent>
-        <div className="font-display text-3xl font-bold tracking-[-0.04em] text-foreground">
+        <div className="font-display text-3xl font-black uppercase tracking-tight text-foreground">
           {value}
         </div>
         {description && (
@@ -349,7 +349,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
         description={`${formatNullable(lead.category)} • ${formatCityState(lead.city, lead.state)}`}
         action={
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="border-2 border-border shadow-[2px_2px_0_#0a0a0a]">
               <Link href="/leads">
                 <ArrowLeft className="h-4 w-4" />
                 Voltar
@@ -367,10 +367,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
         }
       />
 
-      <Card className="overflow-hidden">
-        <CardContent className="relative p-6">
-          <div className="pointer-events-none absolute right-0 top-0 h-44 w-44 rounded-full bg-primary/14 blur-3xl" />
-          <div className="relative grid gap-6 xl:grid-cols-[1.25fr_0.75fr] xl:items-start">
+      <Card className="overflow-hidden border-2 border-border shadow-[4px_4px_0_#0a0a0a]">
+        <CardContent className="p-6">
+          <div className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr] xl:items-start">
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant={leadStatusVariants[lead.status]}>
@@ -390,7 +389,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                 <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                   Empresa monitorada
                 </p>
-                <h2 className="font-display mt-2 text-3xl font-bold tracking-[-0.04em] text-foreground md:text-4xl">
+                <h2 className="font-display mt-2 text-3xl font-black tracking-tight text-foreground md:text-4xl">
                   {lead.company_name}
                 </h2>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
@@ -399,7 +398,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+            <div className="border border-border bg-muted/40 p-5">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -409,7 +408,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                     {primaryScore}
                   </p>
                 </div>
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary/12 text-secondary">
+                <div className="flex h-11 w-11 items-center justify-center bg-[#EAF2FF] text-secondary">
                   <Target className="h-5 w-5" />
                 </div>
               </div>
@@ -417,7 +416,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                 {leadTemperature.description}
               </p>
               <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-border/70 bg-card/70 p-3">
+                <div className="border border-border bg-muted/40 p-3">
                   <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                     Cidade / UF
                   </p>
@@ -425,7 +424,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                     {formatCityState(lead.city, lead.state)}
                   </p>
                 </div>
-                <div className="rounded-xl border border-border/70 bg-card/70 p-3">
+                <div className="border border-border bg-muted/40 p-3">
                   <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                     Enriquecimento
                   </p>
@@ -448,15 +447,15 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
       </Card>
 
       {(isEnrichmentRunning || isAiMessageRunning) && (
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
           <CardContent className="relative p-6">
             <div className="pointer-events-none absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-secondary/10 to-transparent" />
             <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-3 w-3">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/70" />
-                    <span className="relative inline-flex h-3 w-3 rounded-full bg-secondary" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/70" />
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-primary" />
                   </span>
                   {isAiMessageRunning ? (
                     <Badge variant={aiMessageStatusVariants[lead.ai_message_status]}>
@@ -499,8 +498,8 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                         : "Executando"}
                   </span>
                 </div>
-                <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-muted/70">
-                  <div className="h-full w-2/3 animate-pulse rounded-full bg-gradient-to-r from-primary via-secondary to-secondary" />
+                <div className="mt-3 h-2 overflow-hidden bg-muted">
+                  <div className="h-full w-2/3 animate-pulse bg-primary" />
                 </div>
               </div>
             </div>
@@ -523,9 +522,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card>
+        <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
           <CardHeader>
-            <CardTitle className="text-base">Dados da empresa</CardTitle>
+            <CardTitle className="font-black uppercase tracking-tight">Dados da empresa</CardTitle>
             <CardDescription>
               Informacoes base capturadas e prontas para uso operacional.
             </CardDescription>
@@ -577,9 +576,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
           <CardHeader>
-            <CardTitle className="text-base">Origem da busca</CardTitle>
+            <CardTitle className="font-black uppercase tracking-tight">Origem da busca</CardTitle>
             <CardDescription>
               Contexto da busca que gerou este lead dentro do workspace ativo.
             </CardDescription>
@@ -619,7 +618,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                 />
               </div>
             ) : (
-              <div className="rounded-2xl border border-border/70 bg-background/60 p-5 text-sm text-muted-foreground">
+              <div className="border border-border bg-muted/40 p-5 text-sm text-muted-foreground">
                 Este lead nao possui uma busca relacionada registrada.
               </div>
             )}
@@ -628,16 +627,16 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-        <Card>
+        <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
           <CardHeader>
-            <CardTitle className="text-base">Score e sinais comerciais</CardTitle>
+            <CardTitle className="font-black uppercase tracking-tight">Score e sinais comerciais</CardTitle>
             <CardDescription>
               Leitura inicial do potencial comercial antes do enriquecimento aprofundado.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-border/70 bg-background/60 p-4">
+              <div className="border border-border bg-muted/40 p-4">
                 <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                   Raw score
                 </p>
@@ -645,7 +644,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                   {lead.raw_score}
                 </p>
               </div>
-              <div className="rounded-2xl border border-border/70 bg-background/60 p-4">
+              <div className="border border-border bg-muted/40 p-4">
                 <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
                   Final score
                 </p>
@@ -666,9 +665,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
           <CardHeader>
-            <CardTitle className="text-base">Enriquecimento</CardTitle>
+            <CardTitle className="font-black uppercase tracking-tight">Enriquecimento</CardTitle>
             <CardDescription>
               Sinais comerciais capturados no enriquecimento do lead.
             </CardDescription>
@@ -712,7 +711,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
 
                 {/* Seção: Análise do site */}
                 {websiteAnalysisUsed && (
-                  <div className="rounded-2xl border border-border/70 bg-background/60 p-4 space-y-4">
+                  <div className="border border-border bg-muted/40 p-4 space-y-4">
                     <div className="flex items-center gap-2">
                       <Globe className="h-4 w-4 text-muted-foreground" />
                       <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -883,7 +882,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
               </>
             )}
             {lead.enrichment_error && (
-              <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+              <div className="border border-destructive bg-red-50 p-4 text-sm text-destructive">
                 {lead.enrichment_error}
               </div>
             )}
@@ -896,9 +895,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <Card>
+        <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
           <CardHeader>
-            <CardTitle className="text-base">Mensagem sugerida</CardTitle>
+            <CardTitle className="font-black uppercase tracking-tight">Mensagem sugerida</CardTitle>
             <CardDescription>
               Area reservada para a abordagem comercial personalizada por IA.
             </CardDescription>
@@ -912,7 +911,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                   </Badge>
                   <Badge variant="outline">Geracao em andamento</Badge>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+                <div className="border border-border bg-muted/40 p-5">
                   <div className="mb-3 flex items-center gap-2 text-foreground">
                     <MessageSquareText className="h-4 w-4 text-primary" />
                     <p className="text-sm font-medium">Preview da mensagem</p>
@@ -963,7 +962,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                     )}
                   </div>
 
-                  <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+                  <div className="border border-border bg-muted/40 p-5">
                     <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="flex items-center gap-2 text-foreground">
                         <MessageSquareText className="h-4 w-4 text-primary" />
@@ -975,7 +974,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                       {lead.ai_first_message}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+                  <div className="border border-border bg-muted/40 p-5">
                     <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="flex items-center gap-2 text-foreground">
                         <MessageSquareText className="h-4 w-4 text-primary" />
@@ -999,7 +998,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                     {aiMessageStatusLabels[lead.ai_message_status]}
                   </Badge>
                 </div>
-                <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+                <div className="border border-destructive bg-red-50 p-4 text-sm text-destructive">
                   {lead.ai_message_error ??
                     "Nao foi possivel gerar a mensagem sugerida deste lead."}
                 </div>
@@ -1012,7 +1011,7 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
                   </Badge>
                   <Badge variant="outline">Aguardando geracao</Badge>
                 </div>
-                <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+                <div className="border border-border bg-muted/40 p-5">
                   <div className="mb-3 flex items-center gap-2 text-foreground">
                     <MessageSquareText className="h-4 w-4 text-primary" />
                     <p className="text-sm font-medium">Preview da mensagem</p>
@@ -1031,9 +1030,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
           <CardHeader>
-            <CardTitle className="text-base">Historico de acoes</CardTitle>
+            <CardTitle className="font-black uppercase tracking-tight">Historico de acoes</CardTitle>
             <CardDescription>
               Linha do tempo inicial do lead dentro da operacao.
             </CardDescription>
@@ -1066,9 +1065,9 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
             ].map((event, index) => (
               <div
                 key={event.title}
-                className="flex gap-4 rounded-2xl border border-border/70 bg-background/60 p-4"
+                className="flex gap-4 border border-border bg-muted/40 p-4"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/12 font-data text-xs text-primary">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#EAF2FF] rounded-full font-data text-xs text-primary">
                   0{index + 1}
                 </div>
                 <div>

@@ -131,17 +131,17 @@ function StatCard({
   icon: React.ComponentType<{ className?: string }>;
 }) {
   return (
-    <Card>
+    <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+        <CardTitle className="font-data text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
           {title}
         </CardTitle>
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-muted/50 text-primary">
+        <div className="flex h-9 w-9 items-center justify-center border border-border/40 bg-[#EAF2FF] text-primary">
           <Icon className="h-4 w-4" />
         </div>
       </CardHeader>
       <CardContent>
-        <div className="font-display text-3xl font-bold tracking-[-0.04em] text-foreground">
+        <div className="font-display text-3xl font-black tracking-tight text-foreground">
           {value}
         </div>
         {description && (
@@ -170,11 +170,11 @@ function parseProcessingMetadata(raw: unknown): SearchProcessingMetadata | null 
 
 function DiagItem({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-border/70 bg-background/60 p-3">
-      <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+    <div className="border border-border bg-muted/40 p-3">
+      <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
         {label}
       </p>
-      <div className="mt-2 text-sm font-medium text-foreground">{value}</div>
+      <div className="mt-2 text-sm font-semibold text-foreground">{value}</div>
     </div>
   );
 }
@@ -254,10 +254,9 @@ export default async function SearchDetailPage({
         }
       />
 
-      <Card className="overflow-hidden">
-        <CardContent className="relative p-6">
-          <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-secondary/14 blur-3xl" />
-          <div className="relative grid gap-6 xl:grid-cols-[1.3fr_0.85fr]">
+      <Card className="overflow-hidden border-2 border-border shadow-[4px_4px_0_#0a0a0a]">
+        <CardContent className="p-6">
+          <div className="grid gap-6 xl:grid-cols-[1.3fr_0.85fr]">
             <div className="space-y-5">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant={searchStatusVariants[search.status]}>
@@ -270,7 +269,7 @@ export default async function SearchDetailPage({
                 <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                   Operacao ativa
                 </p>
-                <h2 className="font-display mt-2 text-3xl font-bold tracking-[-0.04em] text-foreground md:text-4xl">
+                <h2 className="font-display mt-2 text-3xl font-black uppercase tracking-tight text-foreground md:text-4xl">
                   {locationLabel || "Cobertura regional configurada"}
                 </h2>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
@@ -279,43 +278,43 @@ export default async function SearchDetailPage({
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border/70 bg-background/60 p-5">
+            <div className="border border-border bg-[#EAF2FF] p-5">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="font-data text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  <p className="font-data text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                     Progresso da extração
                   </p>
-                  <p className="font-display mt-2 text-4xl font-bold tracking-[-0.04em] text-foreground">
+                  <p className="font-display mt-2 text-4xl font-black tracking-tight text-foreground">
                     {search.progress}%
                   </p>
                 </div>
-                <Button asChild size="sm" variant="outline">
+                <Button asChild size="sm" variant="outline" className="border-2 border-border">
                   <Link href={`/leads?search_id=${search.id}`}>
                     Abrir leads
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
               </div>
-              <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted/70">
+              <div className="mt-4 h-2 overflow-hidden bg-white/60">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
+                  className="h-full bg-primary transition-all"
                   style={{ width: `${search.progress}%` }}
                 />
               </div>
               <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-xl border border-border/70 bg-card/70 p-3">
-                  <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <div className="border border-border bg-card p-3">
+                  <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
                     Solicitados
                   </p>
-                  <p className="mt-2 font-display text-2xl font-semibold text-foreground">
+                  <p className="mt-2 font-display text-2xl font-black text-foreground">
                     {search.quantity_requested}
                   </p>
                 </div>
-                <div className="rounded-xl border border-border/70 bg-card/70 p-3">
-                  <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <div className="border border-border bg-card p-3">
+                  <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
                     Encontrados
                   </p>
-                  <p className="mt-2 font-display text-2xl font-semibold text-foreground">
+                  <p className="mt-2 font-display text-2xl font-black text-primary">
                     {search.quantity_found}
                   </p>
                 </div>
@@ -326,26 +325,25 @@ export default async function SearchDetailPage({
       </Card>
 
       {isRunning && (
-        <Card className="overflow-hidden">
-          <CardContent className="relative p-6">
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-secondary/10 to-transparent" />
-            <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+        <Card className="overflow-hidden border-2 border-primary bg-[#EAF2FF] shadow-[3px_3px_0_#0a0a0a]">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-3 w-3">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary/70" />
-                    <span className="relative inline-flex h-3 w-3 rounded-full bg-secondary" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/70" />
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-primary" />
                   </span>
                   <Badge variant={searchStatusVariants[search.status]}>
                     {searchStatusLabels[search.status]}
                   </Badge>
                 </div>
                 <div>
-                  <h3 className="font-display text-2xl font-semibold tracking-[-0.03em] text-foreground">
-                    Estamos buscando, organizando e priorizando seus leads.
+                  <h3 className="font-display text-2xl font-black uppercase tracking-tight text-foreground">
+                    Buscando, organizando e priorizando leads.
                   </h3>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                    O job em background esta executando a fila desta busca. Assim que a operacao concluir, os leads relacionados aparecerao automaticamente nesta tela.
+                    O job em background está executando a fila desta busca. Assim que a operação concluir, os leads relacionados aparecerão automaticamente nesta tela.
                   </p>
                 </div>
               </div>
@@ -355,9 +353,9 @@ export default async function SearchDetailPage({
                   <span>Processamento em andamento</span>
                   <span className="font-data text-foreground">{search.progress}%</span>
                 </div>
-                <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-muted/70">
+                <div className="mt-3 h-2.5 overflow-hidden bg-white/60">
                   <div
-                    className="h-full animate-pulse rounded-full bg-gradient-to-r from-primary via-secondary to-secondary"
+                    className="h-full animate-pulse bg-primary transition-all"
                     style={{ width: `${Math.max(search.progress, 8)}%` }}
                   />
                 </div>
@@ -410,11 +408,11 @@ export default async function SearchDetailPage({
         />
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Dados da busca</CardTitle>
+      <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
+        <CardHeader className="border-b-2 border-border pb-3">
+          <CardTitle className="font-black uppercase tracking-tight">Dados da busca</CardTitle>
           <CardDescription>
-            Informacoes usadas para gerar os leads deste processamento.
+            Informações usadas para gerar os leads deste processamento.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -432,11 +430,11 @@ export default async function SearchDetailPage({
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Diagnostico da busca</CardTitle>
+      <Card className="border-2 border-border shadow-[3px_3px_0_#0a0a0a]">
+        <CardHeader className="border-b-2 border-border pb-3">
+          <CardTitle className="font-black uppercase tracking-tight">Diagnóstico da busca</CardTitle>
           <CardDescription>
-            Metricas internas do pipeline de geracao de leads.
+            Métricas internas do pipeline de geração de leads.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -492,8 +490,8 @@ export default async function SearchDetailPage({
               </div>
 
               {processingMeta.queryUsed && (
-                <div className="rounded-xl border border-border/70 bg-background/60 p-3">
-                  <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                <div className="border border-border bg-muted/40 p-3">
+                  <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
                     Query usada
                   </p>
                   <p className="mt-2 font-mono text-xs text-foreground break-all">
@@ -503,8 +501,8 @@ export default async function SearchDetailPage({
               )}
 
               {processingMeta.error && (
-                <div className="rounded-xl border border-destructive/40 bg-destructive/8 p-3">
-                  <p className="font-data text-[10px] uppercase tracking-[0.16em] text-destructive/80">
+                <div className="border border-destructive bg-red-50 p-3">
+                  <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-destructive">
                     Erro
                   </p>
                   <p className="mt-2 text-sm text-destructive">
@@ -532,46 +530,44 @@ export default async function SearchDetailPage({
           }
         />
       ) : (
-        <Card className="overflow-hidden">
-          <CardHeader>
-            <CardTitle className="text-base">Leads da busca</CardTitle>
+        <Card className="overflow-hidden border-2 border-border shadow-[4px_4px_0_#0a0a0a]">
+          <CardHeader className="border-b-2 border-border pb-3">
+            <CardTitle className="font-black uppercase tracking-tight">Leads da busca</CardTitle>
             <CardDescription>
               Lista compacta dos leads associados a este processamento.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="space-y-4 p-4 md:hidden">
+            <div className="space-y-3 p-4 md:hidden">
               {leads.map((lead) => (
-                <Card key={lead.id} className="overflow-hidden bg-background/60">
-                  <CardContent className="space-y-4 p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="font-medium text-foreground">{lead.company_name}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">{formatLeadLocation(lead)}</p>
-                      </div>
-                      <Badge variant={leadStatusVariants[lead.status]}>
-                        {leadStatusLabels[lead.status]}
-                      </Badge>
+                <div key={lead.id} className="border border-border bg-card p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-foreground">{lead.company_name}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{formatLeadLocation(lead)}</p>
                     </div>
+                    <Badge variant={leadStatusVariants[lead.status]}>
+                      {leadStatusLabels[lead.status]}
+                    </Badge>
+                  </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="rounded-xl border border-border/70 bg-card/75 p-3">
-                        <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Categoria</p>
-                        <p className="mt-2 text-sm font-medium text-foreground">{lead.category ?? "-"}</p>
-                      </div>
-                      <div className="rounded-xl border border-border/70 bg-card/75 p-3">
-                        <p className="font-data text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Score</p>
-                        <p className="mt-2 text-sm font-medium text-foreground">{lead.final_score}</p>
-                      </div>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <div className="border border-border bg-muted/40 p-3">
+                      <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Categoria</p>
+                      <p className="mt-1.5 text-sm font-semibold text-foreground">{lead.category ?? "-"}</p>
                     </div>
+                    <div className="border border-border bg-[#EAF2FF] p-3">
+                      <p className="font-data text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Score</p>
+                      <p className="mt-1.5 text-sm font-black text-primary">{lead.final_score}</p>
+                    </div>
+                  </div>
 
-                    <div className="space-y-1 text-sm text-muted-foreground">
-                      <p>Telefone: {lead.phone ?? "-"}</p>
-                      <p>Avaliacao: {formatRating(lead.rating)}</p>
-                      <p>Origem: {lead.source ?? "-"}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                  <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+                    <p>Telefone: {lead.phone ?? "-"}</p>
+                    <p>Avaliação: {formatRating(lead.rating)}</p>
+                    <p>Origem: {lead.source ?? "-"}</p>
+                  </div>
+                </div>
               ))}
             </div>
 

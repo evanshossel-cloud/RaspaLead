@@ -35,20 +35,20 @@ export function WorkspaceSwitcher({ workspaces, currentWorkspaceId }: WorkspaceS
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="h-11 max-w-[280px] justify-start gap-3 rounded-xl px-3"
+          className="h-12 max-w-[300px] justify-start gap-3 border-[3px] border-[#050505] bg-white px-3 shadow-[3px_3px_0_#050505]"
           disabled={isPending}
           aria-label="Trocar workspace"
         >
-          <div className="glow-primary flex h-8 w-8 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 shrink-0">
-            <span className="font-display text-xs font-bold text-primary">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center border-[3px] border-[#050505] bg-[#EAF2FF]">
+            <span className="font-display text-xs font-black text-[#155EEF]">
               {current?.name?.charAt(0)?.toUpperCase() ?? "W"}
             </span>
           </div>
           <div className="flex min-w-0 flex-1 flex-col items-start">
-            <span className="font-data text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            <span className="font-data text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
               Workspace ativo
             </span>
-            <span className="truncate text-sm font-medium text-foreground">
+            <span className="truncate text-sm font-black text-foreground">
               {current?.name ?? "Workspace"}
             </span>
           </div>
@@ -66,8 +66,8 @@ export function WorkspaceSwitcher({ workspaces, currentWorkspaceId }: WorkspaceS
             onClick={() => handleSwitch(ws.id)}
             className="flex items-center gap-3"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 shrink-0">
-              <span className="font-display text-xs font-bold text-primary">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center border-[3px] border-[#050505] bg-[#EAF2FF]">
+              <span className="font-display text-xs font-black text-[#155EEF]">
                 {ws.name.charAt(0).toUpperCase()}
               </span>
             </div>

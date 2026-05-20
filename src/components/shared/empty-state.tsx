@@ -19,17 +19,16 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "surface-panel relative overflow-hidden rounded-2xl px-6 py-14 text-center",
+        "border-2 border-border bg-card px-6 py-14 text-center shadow-[4px_4px_0_#0a0a0a]",
         className
       )}
     >
-      <div className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
       {Icon && (
-        <div className="glow-primary mx-auto mb-5 flex h-18 w-18 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center border-2 border-border bg-[#EAF2FF] shadow-[3px_3px_0_#0a0a0a]">
           <Icon className="h-8 w-8 text-primary" />
         </div>
       )}
-      <h3 className="font-display text-2xl font-semibold text-foreground">{title}</h3>
+      <h3 className="font-display text-2xl font-black uppercase tracking-tight text-foreground">{title}</h3>
       {description && (
         <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
           {description}

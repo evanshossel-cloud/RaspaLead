@@ -1,5 +1,13 @@
 # TASKS
 
+## Atualizacao 2026-05-20
+
+- Identidade visual unificada concluida: landing, auth e app interno seguem brutalist SaaS B2B clean
+- `/login`, `/register`, dashboard, buscas, leads, billing, settings e CRM foram alinhados com a landing aprovada
+- Base visual antiga dark command center removida das rotas principais
+- App fixado no tema claro para evitar retorno da paleta antiga
+- Nenhuma logica de negocio, Supabase, Inngest, providers, schema, RLS ou Server Actions foi alterada
+
 ## Atualizacao 2026-05-19
 
 - Landing publica brutalist SaaS B2B concluida em `src/app/page.tsx`
@@ -12,7 +20,7 @@
 ## Concluidas
 
 - Auth SSR com middleware e workspaces multi-tenant
-- Dashboard command center dark premium
+- App interno alinhado com a identidade brutalist SaaS B2B clean
 - Criacao real de buscas com Server Action + Inngest
 - Geracao de leads mockados por busca
 - Detalhe da busca com auto-refresh
@@ -65,10 +73,12 @@
 2. OpenAI real para mensagens e score contextual
 3. Edicao e aprovacao de mensagem antes de enviar
 4. Beta fechado com 3 nichos/cidades reais (validar funil completo)
-5. Nova landing brutalist SaaS B2B
+5. Refinar conversao da landing brutalist SaaS B2B existente
 6. Checkout e planos reais
 
-### Landing page e identidade publica
+### Landing page e identidade visual
+
+Status: landing e identidade unificada ja implementadas. A lista abaixo fica como historico da direcao inicial; novas tarefas devem preservar a linguagem clean/brutalist atual.
 
 1. Revisar landing atual (`/` em `src/app/page.tsx`) e mapear o que precisa mudar
 2. Criar nova landing no estilo brutalist SaaS B2B (baseado nas referencias: Combustivel Justo + dadospremium.com)

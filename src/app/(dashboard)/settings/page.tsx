@@ -3,8 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTheme } from "next-themes";
-import { Loader2, Moon, Sparkles, Sun, UserRound, Zap } from "lucide-react";
+import { Loader2, Palette, Sparkles, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { PageHeader } from "@/components/shared/page-header";
@@ -35,20 +34,12 @@ const workspaceSchema = z.object({
 type ProfileInput = z.infer<typeof profileSchema>;
 type WorkspaceInput = z.infer<typeof workspaceSchema>;
 
-const themes = [
-  { value: "dark", label: "Noturno", icon: Moon, tone: "text-primary" },
-  { value: "light", label: "Claro", icon: Sun, tone: "text-secondary" },
-  { value: "yellow", label: "Destaque", icon: Zap, tone: "text-[hsl(var(--warning))]" },
-] as const;
-
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
-
   return <p className="text-sm text-destructive">{message}</p>;
 }
 
 export default function SettingsPage() {
-  const { theme, setTheme } = useTheme();
   const [isPendingProfile, startProfile] = useTransition();
   const [isPendingWorkspace, startWorkspace] = useTransition();
   const [workspaceId, setWorkspaceId] = useState<string | null>(null);
@@ -124,22 +115,6 @@ export default function SettingsPage() {
     });
   }
 
-  function onThemeChange(newTheme: string) {
-    setTheme(newTheme);
-    startProfile(async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
-
-      await supabase
-        .from("profiles")
-        .update({ preferred_theme: newTheme as "dark" | "light" | "yellow" } as unknown as never)
-        .eq("id", user.id);
-    });
-  }
-
   function onWorkspaceSubmit(data: WorkspaceInput) {
     if (!workspaceId) return;
     startWorkspace(async () => {
@@ -163,70 +138,58 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow="RaspaLead // Preferencias"
-        title="Configurações"
-        description="Ajuste o visual da central, atualize seu perfil e refine o contexto padrao do workspace."
+        eyebrow="RaspaLead / Preferencias"
+        title="Configuracoes"
+        description="Atualize seu perfil e refine o contexto padrao do workspace."
       />
 
       <div className="grid gap-4 xl:grid-cols-[0.72fr_1.28fr]">
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Tema da interface</CardTitle>
+          <CardHeader className="border-b-4 border-[#050505]">
+            <CardTitle>Identidade visual</CardTitle>
             <CardDescription>
-              Escolha a leitura visual da sua central de prospeccao.
+              Todo o produto segue a mesma identidade brutalist SaaS B2B clean da landing.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {themes.map(({ value, label, icon: Icon, tone }) => {
-              const isActive = theme === value;
-
-              return (
-                <button
-                  key={value}
-                  onClick={() => onThemeChange(value)}
-                  className={`flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-all ${
-                    isActive
-                      ? "glow-primary border-primary/30 bg-primary/10"
-                      : "border-border/70 bg-background/60 hover:border-primary/20 hover:bg-background/80"
-                  }`}
-                >
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl bg-muted/60 ${tone}`}>
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">{label}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {value === "dark"
-                        ? "Visual premium com foco operacional."
-                        : value === "light"
-                          ? "Leitura clara para ambientes luminosos."
-                          : "Modo com foco em destaque visual."}
-                    </p>
-                  </div>
-                  {isActive && <Badge>Ativo</Badge>}
-                </button>
-              );
-            })}
+          <CardContent className="space-y-4 pt-5">
+            <div className="border-[3px] border-[#050505] bg-[#EAF2FF] p-4 shadow-[3px_3px_0_#050505]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center border-[3px] border-[#050505] bg-white text-[#155EEF]">
+                  <Palette className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-display text-lg font-black uppercase text-[#0F172A]">
+                    Brutalist SaaS B2B clean
+                  </p>
+                  <p className="mt-1 text-sm font-bold text-[#475569]">
+                    Fundo claro, CTA azul, sucesso em verde, amarelo suave e bordas pretas fortes.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Badge variant="outline">Tema unificado</Badge>
           </CardContent>
         </Card>
 
         <div className="space-y-6">
           <Card>
-            <CardHeader>
+            <CardHeader className="border-b-4 border-[#050505]">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/12 text-primary">
+                <div className="flex h-11 w-11 items-center justify-center border-[3px] border-[#050505] bg-[#EAF2FF] text-[#155EEF]">
                   <UserRound className="h-5 w-5" />
                 </div>
                 <div>
-                  <CardTitle className="text-base">Perfil</CardTitle>
+                  <CardTitle>Perfil</CardTitle>
                   <CardDescription>Seus dados de operador.</CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-5">
               <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="full_name">Nome completo</Label>
+                  <Label htmlFor="full_name" className="text-[11px] font-black uppercase tracking-wide">
+                    Nome completo
+                  </Label>
                   <Input id="full_name" {...profileForm.register("full_name")} />
                   <FieldError message={profileForm.formState.errors.full_name?.message} />
                 </div>
@@ -245,29 +208,31 @@ export default function SettingsPage() {
           </Card>
 
           <Card>
-            <CardHeader>
+            <CardHeader className="border-b-4 border-[#050505]">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary/12 text-secondary">
+                <div className="flex h-11 w-11 items-center justify-center border-[3px] border-[#050505] bg-[#E9FBEF] text-[#059669]">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
-                  <CardTitle className="text-base">Workspace</CardTitle>
-                  <CardDescription>
-                    Contexto padrao usado para buscas futuras.
-                  </CardDescription>
+                  <CardTitle>Workspace</CardTitle>
+                  <CardDescription>Contexto padrao usado para buscas futuras.</CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-5">
               <form onSubmit={workspaceForm.handleSubmit(onWorkspaceSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="ws_name">Nome do workspace</Label>
+                  <Label htmlFor="ws_name" className="text-[11px] font-black uppercase tracking-wide">
+                    Nome do workspace
+                  </Label>
                   <Input id="ws_name" {...workspaceForm.register("name")} />
                   <FieldError message={workspaceForm.formState.errors.name?.message} />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="brand_name">Marca ou empresa</Label>
+                  <Label htmlFor="brand_name" className="text-[11px] font-black uppercase tracking-wide">
+                    Marca ou empresa
+                  </Label>
                   <Input
                     id="brand_name"
                     placeholder="Minha agencia"
@@ -276,7 +241,9 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="default_offer">Oferta padrao</Label>
+                  <Label htmlFor="default_offer" className="text-[11px] font-black uppercase tracking-wide">
+                    Oferta padrao
+                  </Label>
                   <Textarea
                     id="default_offer"
                     placeholder="Descreva o que voce oferece aos seus clientes..."
@@ -286,7 +253,9 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="default_target_audience">Publico-alvo padrao</Label>
+                  <Label htmlFor="default_target_audience" className="text-[11px] font-black uppercase tracking-wide">
+                    Publico-alvo padrao
+                  </Label>
                   <Textarea
                     id="default_target_audience"
                     placeholder="Descreva o perfil do seu cliente ideal..."
